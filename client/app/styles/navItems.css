@@ -1,0 +1,22 @@
+/* styles.module.css or your global styles */
+.navLink {
+    /* Your existing styles for navLink */
+    /* Example: color, font-size, etc. */
+  
+    /* Add transition for a smooth effect */
+    transition: color 0.3s ease, font-size 0.3s ease;
+  }
+  
+  /* Hover effect for navLink */
+  .navLink:hover {
+    color: #37a39a; /* Hover color */
+    font-size: 20px; /* Change font size on hover */
+  }
+  
+  /* Active link style */
+  .navLink.active {
+    /* Styles for the active link */
+    color: #37a39a;
+    font-size: 20px;
+  }
+  

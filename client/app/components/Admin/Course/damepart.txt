@@ -1,0 +1,181 @@
+{/* add the test content */}
+                    {item?.testsQuestions.map(
+                      (testQuestions: any, testQuestionsIndex: number) => (
+                        <div className="mb-3 block" key={testQuestionsIndex}>
+                          <label className={styles.labelBig}>Add Test</label>
+                          <div className="w-full flex items-center justify-between">
+                            <label className={styles.label}>
+                              Test {testQuestionsIndex + 1}
+                            </label>
+                            <AiOutlineDelete
+                              className={`${
+                                testQuestionsIndex === 0
+                                  ? "cursor-no-drop"
+                                  : "cursor-pointer"
+                              } text-black dark:text-white text-[20px]`}
+                              onClick={() =>
+                                testQuestionsIndex === 0
+                                  ? null
+                                  : handleRemoveTest(index, testQuestionsIndex)
+                              }
+                            />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Add the test questions"
+                            className={`${styles.input}`}
+                            value={testQuestions.question}
+                            onChange={(e) => {
+                              const updatedTestData = [...courseContentData];
+                              updatedTestData[index].testQuestions[
+                                testQuestionsIndex
+                              ].question = e.target.value;
+                              setCourseContentData(updatedTestData);
+                            }}
+                          />
+                          {/* <input
+                          type="text"
+                          placeholder=""
+                          className={`${styles.input} mt-6`}
+                          value={testQuestions.options}
+                          onChange={(e) => {
+                            const updatedData = [...courseContentData];
+                            updatedData[index].links[testsQuestionsIndex].url =
+                              e.target.value;
+                            setCourseContentData(updatedData);
+                          }}
+                        /> */}
+                          {testQuestions.options.map(
+                            (Options: any, optionIndex: any) => (
+                              <div key={optionIndex}>
+                                <input
+                                  type="text"
+                                  placeholder={`Option ${optionIndex + 1}`}
+                                  className={`${styles.input} mt-6`}
+                                  value={Options.optionText}
+                                  onChange={(e) => {
+                                    const updatedData = [...courseContentData];
+                                    updatedData[index].testsQuestions[
+                                      testQuestionsIndex
+                                    ].options[optionIndex].optionText =
+                                      e.target.value;
+                                    setCourseContentData(updatedData);
+                                  }}
+                                />
+                                {/* <label>
+                                      <input
+                                        type="checkbox"
+                                            checked={Options.isCorrect}
+                                               onChange={(e) => {
+                                                 const updatedData = [...courseContentData];
+                                             updatedData[index].testsQuestions[testsQuestionsIndex].options[optionIndex].isCorrect =
+                                              e.target.checked;
+                                                  setCourseContentData(updatedData);
+                                                }}
+                                                  />
+                                              Correct Answer
+                                             </label> */}
+                                      </div>
+                                     )
+                                   )}
+
+                          {/* <input
+                          type="text"
+                          placeholder="currect Answer"
+                          className={`${styles.input} mt-6`}
+                          value={testQuestions.correctAnswer}
+                          onChange={(e) => {
+                            const updatedData = [...courseContentData];
+                            updatedData[index].links[testsQuestionsIndex].url =
+                              e.target.value;
+                            setCourseContentData(updatedData);
+                          }}
+                        /> */}
+                          <select
+                            className={`${styles.select} mt-6`}
+                            value={testQuestions.correctAnswer}
+                            onChange={(e) => {
+                              const updatedData = [...courseContentData];
+                              updatedData[index].testsQuestions[
+                                testQuestionsIndex
+                              ].correctAnswer = e.target.value;
+                              setCourseContentData(updatedData);
+                            }}
+                          >
+                            <option value="" disabled>
+                              Select Correct Answer
+                            </option>
+                            {testQuestions.options.map(
+                              (option: any, optionIndex: any) => (
+                                <option
+                                  key={optionIndex}
+                                  value={option.optionText}
+                                >
+                                  {`Option ${optionIndex + 1}`}
+                                </option>
+                              )
+                            )}
+                          </select>
+
+                          <input
+                            type="number"
+                            placeholder="Enter the marks"
+                            className={`${styles.input} mt-6`}
+                            value={testQuestions.marks}
+                            onChange={(e) => {
+                              const updatedData = [...courseContentData];
+                              updatedData[index].testQuestions[
+                                testQuestionsIndex
+                              ].url = e.target.value;
+                              setCourseContentData(updatedData);
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+
+
+
+
+
+===========================================                    --------------------------------------------------------------------------------------------------------------------------------------
+
+{
+                            item?.testsQuestions.question.map(
+                              (question : any, questionsIndex: number) =>(
+                                <div className="mb-3 block" 
+                                  key={questionsIndex}
+                                >
+                              <label className={styles.labelBig}>Add options</label>
+                          <div className="w-full flex items-center justify-between">
+                            <label className={styles.label}>
+                              options {questionsIndex + 1}
+                            </label>
+                            <AiOutlineDelete
+                              className={`${
+                                questionsIndex === 0
+                                  ? "cursor-no-drop"
+                                  : "cursor-pointer"
+                              } text-black dark:text-white text-[20px]`}
+                              onClick={() =>
+                                questionsIndex === 0
+                                  ? null
+                                  : handleRemoveTest(index, questionsIndex)
+                              }
+                            />
+                          </div>
+
+                          <input type="text"
+                           placeholder={`Add option ${questionsIndex + 1}`}
+                           className={`${styles.input}`}
+                           value={question.optionText}
+                           onChange={(e) => {
+                            const updatedData = [...courseContentData];
+                            updatedData[index].question[questionsIndex].optionText = e.target.value;
+                            setCourseContentData(updatedData);
+                           }}
+                          />
+
+                              )
+                            )
+                          }

@@ -1,0 +1,33 @@
+/* styles/Courses.module.css */
+
+.container {
+    width: 90%;
+    margin: auto;
+  }
+  
+  .title {
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+  }
+  
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  @media (min-width: 768px) { /* Adjust the breakpoint as per your laptop screen size */
+    .list {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none; /* Hide scrollbar for browsers that support WebKit */
+      -ms-overflow-style: none; /* Hide scrollbar for Edge */
+    }
+  
+    .list::-webkit-scrollbar {
+      display: none; /* Hide scrollbar for browsers that support WebKit */
+    }
+  }
+  
