@@ -215,6 +215,8 @@ const CreateCourse = (props: Props) => {
   });
   const [benefits, setBenefits] = useState([{ title: "" }]);
   const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+  const [targetAudience, settargetAudience] = useState([{ title: "" }]);
+  const [MaterialIncluded, setMaterialIncluded] = useState([{ title: "" }]);
   const [courseContentData, setCourseContentData] = useState([
     {
       videoUrl: "",
@@ -268,6 +270,12 @@ const CreateCourse = (props: Props) => {
     // Format prerequisites array
     const formattedPrerequisites = prerequisites.map((prerequisite) => ({
       title: prerequisite.title,
+    }));
+    const formattedtargetAudience = targetAudience.map((targetAudience) => ({
+      title: targetAudience.title,
+    }));
+    const formattedMaterialIncluded = MaterialIncluded.map((MaterialIncluded) => ({
+      title: MaterialIncluded.title,
     }));
 
     // Format course content array
@@ -330,6 +338,8 @@ const CreateCourse = (props: Props) => {
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
       prerequisites: formattedPrerequisites,
+      targetAudience:formattedtargetAudience,
+      MaterialIncluded:formattedMaterialIncluded,
       courseData: formattedCourseContentData,
     };
     setCourseData(data);
@@ -360,6 +370,10 @@ const CreateCourse = (props: Props) => {
             setBenefits={setBenefits}
             prerequisites={prerequisites}
             setPrerequisites={setPrerequisites}
+            targetAudience={targetAudience}
+            setTargetAudience={settargetAudience}
+            materialIncluded={MaterialIncluded}
+            setMaterialIncluded={setMaterialIncluded}
             active={active}
             setActive={setActive}
           />
