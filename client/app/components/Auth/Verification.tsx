@@ -2,6 +2,7 @@ import { styles } from "@/app/styles/style";
 import { useActivationMutation } from "@/redux/features/auth/authApi";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { AiOutlineClose } from "react-icons/ai";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 
@@ -19,24 +20,53 @@ type VerifyNumber = {
 const Verification: FC<Props> = ({ setRoute }) => {
   const { token } = useSelector((state: any) => state.auth);
   const [activation, { isSuccess, error }] = useActivationMutation();
-  const [invalidError, setInvalidError] = useState<boolean>(false);
-  const [codeSent, setCodeSent] = useState<boolean>(false); // New state to track if the activation code has been sent
+  const [timer, setTimer] = useState<number>(60);
+  const [resendDisabled, setResendDisabled] = useState<boolean>(false);
+  const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+  });
+  const [verificationError, setVerificationError] = useState<boolean>(false);
+
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Account activated successfully");
       setRoute("Login");
+      //alert ("welcome");
     }
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
         toast.error(errorData.data.message);
-        setInvalidError(true);
+        setVerificationError(true); // Set verification error to true only when there's an actual error
       } else {
         console.log("An error occurred:", error);
       }
     }
   }, [isSuccess, error, setRoute]);
+
+
+  useEffect(() => {
+    let timerInterval: NodeJS.Timeout | null = null;
+
+    if (timer > 0) {
+      timerInterval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else {
+      setResendDisabled(false);
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+    };
+  }, [timer]);
+
+
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -45,17 +75,10 @@ const Verification: FC<Props> = ({ setRoute }) => {
     useRef<HTMLInputElement>(null),
   ];
 
-  const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-  });
-
   const verificationHandler = async () => {
     const verificationNumber = Object.values(verifyNumber).join("");
-    if (verificationNumber.length !== 4) {
-      setInvalidError(true);
+    if (verificationNumber.length >= 4) {
+      toast.error("Please enter a 4-digit verification code.");
       return;
     }
     await activation({
@@ -65,7 +88,6 @@ const Verification: FC<Props> = ({ setRoute }) => {
   };
 
   const handleInputChange = (index: number, value: string) => {
-    setInvalidError(false);
     const newVerifyNumber = { ...verifyNumber, [index]: value };
     setVerifyNumber(newVerifyNumber);
 
@@ -76,18 +98,20 @@ const Verification: FC<Props> = ({ setRoute }) => {
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (event.key === "Enter" && index < 3) {
-      inputRefs[index + 1].current?.focus();
-    } else if (event.key === "Enter" && index === 3) {
-      verificationHandler();
-    }
+  const handleResendCode = () => {
+    setResendDisabled(true);
+    setTimer(60);
+    // Logic to resend the code (e.g., send a new code via email)
   };
 
   return (
     <div>
+      <div className="flex justify-end">
+        <button onClick={() => setRoute("Login")} className="outline-none">
+          <AiOutlineClose size={24} />
+        </button>
+      </div>
       <h1 className={`${styles.title}`}>Verify Your Account</h1>
-      <p className="text-center">Activation code has been sent to your mail</p> {/* Added line */}
       <br />
       <div className="w-full flex items-center justify-center mt-2">
         <div className="w-[80px] h-[80px] rounded-full bg-[#497DF2] flex items-center justify-center">
@@ -103,13 +127,12 @@ const Verification: FC<Props> = ({ setRoute }) => {
             key={key}
             ref={inputRefs[index]}
             className={`w-[65px] h-[65px] bg-transparent border-[3px] rounded-[10px] flex items-center text-black dark:text-white justify-center text-[18px] font-Poppins outline-none text-center ${
-              invalidError ? "shake border-red-500" : "dark:border-white border-[#0000004a]"
+              verificationError ? "shake border-red-500" : "dark:border-white border-[#0000004a]"
             }`}
             placeholder=""
             maxLength={1}
             value={verifyNumber[key as keyof VerifyNumber]}
             onChange={(e) => handleInputChange(index, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
           />
         ))}
       </div>
@@ -121,9 +144,29 @@ const Verification: FC<Props> = ({ setRoute }) => {
         </button>
       </div>
       <br />
+      <div className="w-full flex justify-center">
+        {timer > 0 && (
+          <p className="text-sm text-gray-500">
+            Resend code available in {timer} seconds
+          </p>
+        )}
+        {timer === 0 && (
+          <button
+            className={`${styles.button} text-sm`}
+            onClick={handleResendCode}
+            disabled={resendDisabled}
+          >
+            Resend Code
+          </button>
+        )}
+      </div>
+      <br />
       <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
         Go back to sign in?{" "}
-        <span className="text-[#2190ff] pl-1 cursor-pointer" onClick={() => setRoute("Login")}>
+        <span
+          className="text-[#2190ff] pl-1 cursor-pointer"
+          onClick={() => setRoute("Login")}
+        >
           Sign in
         </span>
       </h5>
