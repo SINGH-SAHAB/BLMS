@@ -13,6 +13,8 @@ import {
   updateProfilePicture,
   updateUserInfo,
   updateUserRole,
+  getUserInformation,
+  updateUserRoleById,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAutheticated } from "../middleware/auth";
 const userRouter = express.Router();
@@ -25,7 +27,14 @@ userRouter.post("/login", loginUser);
 
 userRouter.get("/logout",isAutheticated, logoutUser);
 
-userRouter.get("/me", isAutheticated, getUserInfo);
+userRouter.get("/me", 
+isAutheticated, 
+getUserInfo);
+
+userRouter.post("/getInfo", 
+isAutheticated, 
+getUserInformation);
+
 
 userRouter.get("/refresh", updateAccessToken);
 
@@ -50,6 +59,13 @@ userRouter.put(
   isAutheticated,
   authorizeRoles("admin"),
   updateUserRole
+);
+
+userRouter.put(
+  "/update-user-byID",
+  isAutheticated,
+  authorizeRoles("admin"),
+  updateUserRoleById
 );
 
 userRouter.delete(

@@ -17,8 +17,11 @@ import {
   getAllUsersService,
   getUserById,
   updateUserRoleService,
+  getUserIdByEmailMobileAndName
+
 } from "../services/user.service";
 import cloudinary from "cloudinary";
+// import userModel from "../models/user.model";
 
 // register user
 interface IRegistrationBody {
@@ -263,7 +266,7 @@ export const updateAccessToken = CatchAsyncError(
 // get user info
 export const getUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    try {  
       const userId = req.user?._id;
       getUserById(userId, res);
     } catch (error: any) {
@@ -271,6 +274,59 @@ export const getUserInfo = CatchAsyncError(
     }
   }
 );
+// for the teacher verification
+export const getUserInformation = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {  
+      const { userID } = req.body;
+
+      if (!userID) {
+        return next(new ErrorHandler("User ID is required", 400));
+      }
+
+      const user = await userModel.findById(userID);
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+      
+      // Return the user object as the response
+      res.status(200).json({
+        success: true,
+        data: user
+      });
+
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+
+
+// export const getUserID = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     // Extract email, phoneNumber, and name from request body
+//     const { email, phoneNumber, name } = req.body;
+
+//     // Call getUserIdByEmailMobileAndName to fetch user ID
+//     const userIdResponse = await getUserIdByEmailMobileAndName(email, phoneNumber, name, res);
+
+//     // Check if the response is successful
+//     if (!!userIdResponse) {
+//       // If successful, send user ID in the response
+//       res.status(200).json({
+//         success: true,
+//         userId: userIdResponse,
+//       });
+//     } else {
+//       // If not successful, throw an error
+//       throw new ErrorHandler("User not found", 404);
+//     }
+//   } catch (error) {
+//     // Handle any errors
+//     return next(new ErrorHandler(error.message, error.status || 500));
+//   }
+// };
 
 interface ISocialAuthBody {
   email: string;
@@ -456,6 +512,26 @@ export const updateUserRole = CatchAsyncError(
     }
   }
 );
+
+export const updateUserRoleById = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+     try {
+       const { userId, role } = req.body;
+       const isUserExist = await userModel.findById(userId);
+       if (isUserExist) {
+         updateUserRoleService(res, userId, role);
+       } else {
+         res.status(400).json({
+           success: false,
+           message: "User not found",
+         });
+       }
+     } catch (error: any) {
+       return next(new ErrorHandler(error.message, 400));
+     }
+  }
+ );
+ 
 
 // Delete user --- only for admin
 export const deleteUser = CatchAsyncError(

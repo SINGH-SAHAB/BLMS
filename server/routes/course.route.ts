@@ -29,7 +29,7 @@ const courseRouter = express.Router();
 courseRouter.post(
   "/create-course",
   isAutheticated,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","teacher"),
   uploadCourse
 );
 
@@ -37,7 +37,7 @@ courseRouter.post(
 courseRouter.put(
   "/edit-course/:id",
   isAutheticated,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","teacher"),
   editCourse
 );
 
@@ -72,7 +72,7 @@ courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
 courseRouter.delete(
   "/delete-course/:id",
   isAutheticated,
-  authorizeRoles("admin"),
+  authorizeRoles("admin","teacher"),
   deleteCourse
 );
 
