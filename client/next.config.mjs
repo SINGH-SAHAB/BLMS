@@ -1,6 +1,5 @@
- /*@type {import('next').NextConfig} */
-
- const nextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
       domains: ['res.cloudinary.com','randomuser.me'],
     },
@@ -9,6 +8,6 @@
       suppressHydrationWarning: true,
     }
 }
-export default (nextConfig);
+export default nextConfig;
 
 

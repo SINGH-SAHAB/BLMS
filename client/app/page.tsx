@@ -9,40 +9,28 @@ import FAQ from "./components/FAQ/FAQ";
 import Footer from "./components/Footer";
 import Home from "./components/Route/homelogin";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
-
-
-
+// import Attendance from "./components/Route/attandance";
+// import Quiz from "./components/Quiz/Quizecomp"
 
 interface Props {}
 
-
-
-
-
-
 const Page: FC<Props> = (props) => {
- 
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [route, setRoute] = useState("Login");
-  
-//const { data } = useSession();
   const{ data:userData} = useLoadUserQuery(undefined,{});
   // State to store login status
 
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-
-    useEffect(()=>{
-      setIsLoggedIn(!!userData);
-     // alert(!!userData);
-    },[userData]);
-
+  useEffect(()=>{
+    setIsLoggedIn(!!userData);
+   // alert(!!userData);
+  },[userData]);
 
   return (
     <div>
-     {/* <Heading
+      {/* <Heading
         title="ELearning"
         description="ELearning is a platform for students to learn and get help from teachers"
         keywords="Prograaming,MERN,Redux,Machine Learning"
@@ -54,7 +42,6 @@ const Page: FC<Props> = (props) => {
         setRoute={setRoute}
         route={route}
       />
-  
       {/* Conditionally render either the Hero component or Home component */}
       {isLoggedIn ? (
           <>
