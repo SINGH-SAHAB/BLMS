@@ -286,13 +286,13 @@ const Signup: FC<Props> = ({ setRoute }) => {
       </form>
       </div>
       <div className=" w-full flex flex-col items-center justify-center">
-        <h5 className="text-center font-Poppins text-[14px] text-black dark:text-white">
+        {/* <h5 className="text-center font-Poppins text-[14px] text-black dark:text-white">
           Or join with
         </h5>
         <div className="flex items-center justify-center my-2">
           <FcGoogle size={30} className="cursor-pointer mr-2" />
           <AiFillGithub size={30} className="cursor-pointer ml-2" />
-        </div>
+        </div> */}
         <h5 className="text-center font-Poppins text-[14px]">
           Already have an account?{" "}
           <span
