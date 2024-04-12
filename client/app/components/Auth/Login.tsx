@@ -1,36 +1,30 @@
-"use client";
 import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiFillGithub,
-} from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible, AiFillGithub, AiOutlineClose } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { toast } from "react-hot-toast";
-import {signIn} from "next-auth/react";
+import { signIn } from "next-auth/react";
+import ForgetPasswordPage from "./Forget";
 
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
-  refetch:any;
+  refetch: any;
 };
 
 const schema = Yup.object().shape({
   email: Yup.string()
-    .email("Invalid email!")
-    .required("Please enter your email!"),
-  password: Yup.string().required("Please enter your password!").min(6),
+    .email("Invalid email!"),
+  //  .required("Please enter your email!"),
+  password: Yup.string(),//.required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
+const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false);
-
-  // here i am ading some new usestate for the  Make Password Strength Indicator
-  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showForgetPassword, setShowForgetPassword] = useState(false);
 
   const [login, { isSuccess, error }] = useLoginMutation();
   const formik = useFormik({
@@ -55,29 +49,16 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
     }
   }, [isSuccess, error, setOpen, refetch]);
 
-
-  const checkPasswordStrength = (password: string | any[]) => {
-    // You can implement your own logic to determine password strength.
-    // For example, check for minimum length, presence of special characters, numbers, etc.
-    let strength = 0;
-
-    // Check for minimum length
-    if (password.length <= 6) {
-      strength = 1; // Weak
-    } else if (password.length <= 8) {
-      strength = 2; // Medium
-    } else {
-      strength = 3; // Strong
-    }
-
-    setPasswordStrength(strength);
-  };
-
-
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
 
   return (
     <div className="w-full">
+      <div className="flex justify-end">
+        <button onClick={() => setOpen(false)} className="outline-none">
+          <AiOutlineClose size={24} />
+        </button>
+      </div>
       <h1 className={`${styles.title}`}>Login with ELearning</h1>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
@@ -90,9 +71,7 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
           onChange={handleChange}
           id="email"
           placeholder="loginmail@gmail.com"
-          className={`${errors.email && touched.email && "border-red-500"} ${
-            styles.input
-          }`}
+          className={`${errors.email && touched.email && "border-red-500"} ${styles.input}`}
         />
         {errors.email && touched.email && (
           <span className="text-red-500 pt-2 block">{errors.email}</span>
@@ -106,16 +85,12 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
             type={!show ? "password" : "text"}
             name="password"
             value={values.password}
-            // onChange={handleChange}
             onChange={(e) => {
               handleChange(e);
-              checkPasswordStrength(e.target.value);
             }}
             id="password"
             placeholder="password!@%"
-            className={`${
-              errors.password && touched.password && "border-red-500"
-            } ${styles.input}`}
+            className={`${errors.password && touched.password && "border-red-500"} ${styles.input}`}
           />
           {!show ? (
             <AiOutlineEyeInvisible
@@ -134,35 +109,15 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
             <span className="text-red-500 pt-2 block">{errors.password}</span>
           )}
 
-          </div>
-
-          {/* Password Strength Indicator */}
-          {values.password && (
-            <div className="mt-2">
-              <div className="bg-gray-200 h-2 rounded">
-                <div
-                  className={`${
-                    passwordStrength === 1
-                      ? "bg-red-500"
-                      : passwordStrength === 2
-                      ? "bg-orange-500"
-                      : "bg-green-500"
-                  } h-2 rounded`}
-                  style={{ width: `${(passwordStrength / 3) * 100}%` }}
-                ></div>
-              </div>
-              <p className="text-xs mt-1">
-                Password Strength:{" "}
-                {passwordStrength === 1
-                  ? "Weak"
-                  : passwordStrength === 2
-                  ? "Medium"
-                  : "Strong"}
-              </p>
-            </div>
-            )}
-          
-
+        </div>
+        <div className="flex justify-end">
+          <span
+            className="text-blue-500 underline cursor-pointer mt-2 mr-2"
+            onClick={() => setRoute("ForgotPassword")}
+          >
+            Forgot Password?
+          </span>
+        </div>
 
         <div className="w-full mt-5">
           <input type="submit" value="Login" className={`${styles.button}`} />
@@ -172,9 +127,7 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
           Or join with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer mr-2"
-          onClick={() => signIn("google")}
-          />
+          <FcGoogle size={30} className="cursor-pointer mr-2" onClick={() => signIn("google")} />
           <AiFillGithub size={30} className="cursor-pointer ml-2" onClick={() => signIn("github")} />
         </div>
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
@@ -187,7 +140,9 @@ const Login: FC<Props> = ({ setRoute, setOpen,refetch }) => {
           </span>
         </h5>
       </form>
-      <br />
+
+      {/* Rendering ForgetPasswordPage conditionally */}
+     {/* {showForgetPassword && <ForgetPasswordPage />}*/}
     </div>
   );
 };

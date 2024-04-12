@@ -15,23 +15,13 @@ const EditCategories = (props: Props) => {
   const { data, isLoading,refetch } = useGetHeroDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });
-  // const types = data?.layout ? Object.keys(data.layout) : [];
-
   const [editLayout, { isSuccess: layoutSuccess, error }] =
     useEditLayoutMutation();
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
-    // if (data) {
-    //   setCategories(data.layout.categories);
-    // }
-
-    if (data && data.layout ) {
-      setCategories(data.layout.categories || []);
-    } 
-    else {
-      // If data.layout.categories is null, set an empty array as a default value
-      setCategories([]);
+    if (data) {
+      setCategories(data.layout.categories);
     }
     if (layoutSuccess) {
         refetch();
@@ -150,6 +140,9 @@ const EditCategories = (props: Props) => {
 };
 
 export default EditCategories;
+
+
+
 
 // import { useGetHeroDataQuery, useEditLayoutMutation } from "@/redux/features/layout/layoutApi";
 // import React, { useEffect, useState } from "react";

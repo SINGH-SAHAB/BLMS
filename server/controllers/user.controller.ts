@@ -141,10 +141,14 @@ export const activateUser = CatchAsyncError(
         role,
       });
 
-      res.status(201).json({
-        success: true,
-        
-      });
+      if (user.role === 'student') {
+        res.redirect('/student/dashboard');
+      } else if (user.role === 'instructor') {
+        res.redirect('/instructor/dashboard');
+      } else {
+        // Handle other roles or invalid roles
+        res.status(400).json({ success: false, message: 'Invalid role' });
+      }
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }

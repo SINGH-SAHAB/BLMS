@@ -78,6 +78,8 @@ export interface ICourse extends Document {
   demoUrl: string;
   benefits: { title: string }[];
   prerequisites: { title: string }[];
+  targetAudience:{title: string}[];
+  MaterialIncluded:{title: string}[];
   reviews: IReview[];
   courseData: ICourseData[];
   ratings?: number;
@@ -202,8 +204,10 @@ const courseSchema = new Schema<ICourse>(
       type: String,
       required: true,
     },
-    benefits: [{ title: String }],
-    prerequisites: [{ title: String }],
+    benefits: [{ title:{type: String}  }],
+    prerequisites: [{ title: {type: String} }],
+    targetAudience:[{title: {type: String}}],
+    MaterialIncluded:[{title: {type: String} }],
     reviews: [reviewSchema],
     courseData: [courseDataSchema],
     ratings: {

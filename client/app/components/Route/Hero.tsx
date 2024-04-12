@@ -59,7 +59,7 @@ const Hero: FC<Props> = (props) => {
       <div className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-[0] z-10">
         <Image
           src={data?.layout?.banner?.image?.url }
-          // src={require("../../../public/assests/banner-img-1.png")}
+         // src={require("../../../public/assests/banner-img-1.png")}
           width={400}
           height={400}
           alt=""
