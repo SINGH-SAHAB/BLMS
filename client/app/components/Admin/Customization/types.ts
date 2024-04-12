@@ -9,12 +9,3 @@ export interface Category {
     categories: Category[];
   }
   
-  export interface Level {
-    _id: string;
-    title: string;
-  }
-  
-  export interface CreateLevelspayload {
-    type: string;
-    levels: Level[];
-  }

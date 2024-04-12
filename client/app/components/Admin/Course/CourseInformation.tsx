@@ -250,9 +250,10 @@ const CourseInformation: FC<Props> = ({
                 src={courseInfo.thumbnail}
                 alt=""
                 className="max-h-full w-full object-cover"
-                width={15 }
-                height={15}
-           />
+                width={50}
+                height={50}
+
+              />
             ) : (
               <span className="text-black dark:text-white">
                 Drag and drop your thumbnail here or click to browse

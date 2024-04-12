@@ -2,22 +2,29 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete } from "react-icons/ai";
-import { FiEdit2 } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { useDeleteCourseMutation, useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
+import { FiEdit2 } from "react-icons/fi";
+import {
+  useDeleteCourseMutation,
+  useGetAllCoursesQuery,
+} from "@/redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
+import { styles } from "@/app/styles/style";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-import { styles } from "@/app/styles/style";
 
-const AllCourses = () => {
-  const { theme } = useTheme();
+type Props = {};
+
+const AllCourses = (props: Props) => {
+  const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const [courseId, setCourseId] = useState("");
-  const { isLoading, data, refetch } = useGetAllCoursesQuery({}, { refetchOnMountOrArgChange: true });
+  const { isLoading, data, refetch } = useGetAllCoursesQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const [deleteCourse, { isSuccess, error }] = useDeleteCourseMutation({});
-
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "title", headerName: "Course Title", flex: 1 },
@@ -25,37 +32,59 @@ const AllCourses = () => {
     { field: "purchased", headerName: "Purchased", flex: 0.5 },
     { field: "created_at", headerName: "Created At", flex: 0.5 },
     {
-      field: "edit",
+      field: "  ",
       headerName: "Edit",
       flex: 0.2,
-      renderCell: (params: any) => (
-        <Link href={`/admin/edit-course/${params.row.id}`}>
-          <FiEdit2 className={theme === "dark" ? "dark:text-white" : "text-black"} size={20} />
-        </Link>
-      ),
+      renderCell: (params: any) => {
+        return (
+          <>
+            <Link href={`/admin/edit-course/${params.row.id}`}>
+              <FiEdit2 className="dark:text-white text-black" size={20} />
+            </Link>
+          </>
+        );
+      },
     },
     {
-      field: "delete",
+      field: " ",
       headerName: "Delete",
       flex: 0.2,
-      renderCell: (params: any) => (
-        <Button onClick={() => {
-          setOpen(true);
-          setCourseId(params.row.id);
-        }}>
-          <AiOutlineDelete className={theme === "dark" ? "dark:text-white" : "text-black"} size={20} />
-        </Button>
-      ),
+      renderCell: (params: any) => {
+        return (
+          <>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+                setCourseId(params.row.id);
+              }}
+            >
+              <AiOutlineDelete
+                className="dark:text-white text-black"
+                size={20}
+              />
+            </Button>
+          </>
+        );
+      },
     },
   ];
 
-  const rows = data?.courses.map((item: any) => ({
-    id: item._id,
-    title: item.name,
-    ratings: item.ratings,
-    purchased: item.purchased,
-    created_at: format(item.createdAt),
-  }));
+  const rows: any = [];
+
+  {
+    data &&
+    
+      data.courses.forEach((item: any) => {
+        // data?.courses?.forEach((item: any) => {
+        rows.push({
+          id: item._id,
+          title: item.name,
+          ratings: item.ratings,
+          purchased: item.purchased,
+          created_at: format(item.createdAt),
+        });
+      });
+  }
 
   useEffect(() => {
     if (isSuccess) {
@@ -64,13 +93,16 @@ const AllCourses = () => {
       toast.success("Course Deleted Successfully");
     }
     if (error) {
-      const errorMessage = error as any;
-      toast.error(errorMessage?.data?.message);
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
     }
-  }, [isSuccess, error, refetch]);
+  }, [isSuccess, error,refetch]);
 
   const handleDelete = async () => {
-    await deleteCourse(courseId);
+    const id = courseId;
+    await deleteCourse(id);
   };
 
   return (
@@ -87,9 +119,27 @@ const AllCourses = () => {
                 border: "none",
                 outline: "none",
               },
-              // Add styling based on theme
+              "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-sortIcon": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-row": {
+                color: theme === "dark" ? "#fff" : "#000",
+                borderBottom:
+                  theme === "dark"
+                    ? "1px solid #ffffff30!important"
+                    : "1px solid #ccc!important",
+              },
+              "& .MuiTablePagination-root": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none!important",
+              },
+              "& .name-column--cell": {
+                color: theme === "dark" ? "#fff" : "#000",
               },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: theme === "dark" ? "#3e4396" : "#A4A9FC",
@@ -105,7 +155,8 @@ const AllCourses = () => {
                 backgroundColor: theme === "dark" ? "#3e4396" : "#A4A9FC",
               },
               "& .MuiCheckbox-root": {
-                color: theme === "dark" ? `#b7ebde !important` : `#000 !important`,
+                color:
+                  theme === "dark" ? `#b7ebde !important` : `#000 !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
                 color: `#fff !important`,
@@ -117,7 +168,7 @@ const AllCourses = () => {
           {open && (
             <Modal
               open={open}
-              onClose={() => setOpen(false)}
+              onClose={() => setOpen(!open)}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
@@ -128,7 +179,7 @@ const AllCourses = () => {
                 <div className="flex w-full items-center justify-between mb-6 mt-4">
                   <div
                     className={`${styles.button} !w-[120px] h-[30px] bg-[#47d097]`}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpen(!open)}
                   >
                     Cancel
                   </div>

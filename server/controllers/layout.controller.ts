@@ -58,7 +58,6 @@ export const createLayout = CatchAsyncError(
         });
       }
 
-
       res.status(200).json({
         success: true,
         message: "Layout created successfully",
@@ -134,24 +133,7 @@ export const editLayout = CatchAsyncError(
           type: "Categories",
           categories: categoriesItems,
         });
-
-        if (type === "Levels") {
-          const { levels } = req.body;
-          const levelsData = await LayoutModel.findOne({
-            type: "Levels",
-          });
-          const levelsItems = await Promise.all(
-            levels.map(async (item: any) => {
-              return {
-                title: item.title,
-              };
-            })
-          );
-          await LayoutModel.findByIdAndUpdate(levelsData?._id, {
-            type: "Levels",
-            levels: levelsItems,
-          });
-      }}
+      }
 
       res.status(200).json({
         success: true,
@@ -161,9 +143,7 @@ export const editLayout = CatchAsyncError(
       return next(new ErrorHandler(error.message, 500));
     }
   }
-
 );
-
 
 // get layout by type
 export const getLayoutByType = CatchAsyncError(

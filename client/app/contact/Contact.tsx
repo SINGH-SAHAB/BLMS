@@ -178,9 +178,7 @@ const Contact = () => {
       </p>
       <br />
 
-      <h1 className="text-[20px] text-black dark:text-gray-300 dark:hover:text-white  pb-2">
-    Copyright © 2023 Elearning | All Rights Reserved
-  </h1>
+      
       
     </div>
   </div>

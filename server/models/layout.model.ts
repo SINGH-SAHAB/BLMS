@@ -9,10 +9,6 @@ export interface Category extends Document{
     title:string;
 }
 
-export interface Level extends Document{
-    title:string;
-}
-
 export interface BannerImage extends Document{
     public_id:string;
     url: string;
@@ -22,7 +18,6 @@ interface Layout extends Document{
     type: string;
     faq: FaqItem[];
     categories: Category[];
-    levels: Level[];
     banner:{
         image: BannerImage;
         title: string;
@@ -36,10 +31,6 @@ const faqSchema = new Schema<FaqItem> ({
 });
 
 const categorySchema = new Schema<Category> ({
-    title: {type:String},
-});
-
-const levelSchema = new Schema<Level> ({
     title: {type:String},
 });
 

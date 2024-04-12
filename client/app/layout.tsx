@@ -62,7 +62,7 @@ const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
       return <Loader />;
     }
   
-    return <>{children}</>;
+    return <div>{children}</div>;
   };
   
 

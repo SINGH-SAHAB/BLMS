@@ -1,11 +1,9 @@
+// api.ts
+import { CreateCategoriesPayload } from '@/app/components/Admin/Customization/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CreateCategoriesPayload, CreateLevelspayload } from '@/app/components/Admin/Customization/types';
 
-const baseQuery = fetchBaseQuery({ baseUrl: '/api' });
-
-const categoriesApi = createApi({
-  reducerPath: 'categoriesApi',
-  baseQuery,
+export const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: (builder) => ({
     createLayout: builder.mutation<void, CreateCategoriesPayload>({
       query: (payload) => ({
@@ -17,19 +15,4 @@ const categoriesApi = createApi({
   }),
 });
 
-const levelsApi = createApi({
-  reducerPath: 'levelsApi',
-  baseQuery,
-  endpoints: (builder) => ({
-    createLayout1: builder.mutation<void, CreateLevelspayload>({
-      query: (payload) => ({
-        url: 'create-layout1',
-        method: 'POST',
-        body: payload,
-      }),
-    }),
-  }),
-});
-
-export const { useCreateLayoutMutation: useCreateCategoriesMutation } = categoriesApi;
-export const { useCreateLayout1Mutation: useCreateLevelsMutation } = levelsApi;
+export const { useCreateLayoutMutation } = api;
