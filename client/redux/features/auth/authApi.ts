@@ -31,6 +31,55 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
+
+      
+        resetPass: builder.mutation<RegistrationResponse, RegistrationData>({
+          query: (data) => ({
+            url: "reset-pass",
+            method: "POST",
+            body: data,
+            credentials: "include" as const,
+          }),
+          async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            try {
+              const result = await queryFulfilled;
+              console.log();
+              dispatch(
+                userRegistration({
+                  token: result.data.activationToken,
+                })
+              );
+            } catch (error: any) {
+              console.log(error);
+            }
+          },
+        }),
+    
+
+        resendCode: builder.mutation<RegistrationResponse, RegistrationData>({
+          query: (data) => ({
+            url: "resend-activation",
+            method: "POST",
+            body: data,
+            credentials: "include" as const,
+          }),
+          async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            try {
+              const result = await queryFulfilled;
+              console.log();
+              dispatch(
+                userRegistration({
+                  token: result.data.activationToken,
+                })
+              );
+            } catch (error: any) {
+              console.log(error);
+            }
+          },
+        }),
+    
+
     activation: builder.mutation({
       query: ({ activation_token, activation_code }) => ({
         url: "activate-user",
@@ -41,6 +90,31 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+
+    newpass: builder.mutation({
+      query: ({ activation_token, activation_code }) => ({
+        url: "new-pass",
+        method: "POST",
+        body: {
+          activation_token,
+          activation_code,
+        },
+      }),
+    }),
+
+    newPassword: builder.mutation({
+      query: ({ activation_token, newPassword }) => ({
+        url: "update-new-password",
+        method: "PUT",
+        body: {
+          activation_token,
+          newPassword,
+        },
+        credentials: "include" as const,
+      }),
+    }),
+
+
     login: builder.mutation({
       query: ({ email, password }) => ({
         url: "login",
@@ -65,6 +139,8 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
+   
     socialAuth: builder.mutation({
       query: ({ email, name, avatar }) => ({
         url: "social-auth",
@@ -90,6 +166,7 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
     logOut: builder.query({
       query: () => ({
         url: "logout",
@@ -106,11 +183,40 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
-  }),
-});
+
+
+//     auth: builder.mutation({
+//       query: ({ email}) => ({
+//         url: "auth",
+//         method: "POST",
+//         body: {
+//           email,
+//         },
+//         credentials: "include" as const,
+//       }),
+//       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+//         try {
+//           const result = await queryFulfilled;
+//           dispatch(
+//             userLoggedIn({
+//               accessToken: result.data.accessToken,
+//               user: result.data.user,
+//             })
+//           );
+//         } catch (error: any) {
+//           console.log(error);
+//         }
+//       },
+//     }),
+   }),
+   });
 
 export const {
   useRegisterMutation,
+  useResetPassMutation,
+  useResendCodeMutation,
+  useNewpassMutation,
+  useNewPasswordMutation,
   useActivationMutation,
   useLoginMutation,
   useSocialAuthMutation,

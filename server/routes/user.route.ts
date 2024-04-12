@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  NewPass,
   activateUser,
   deleteUser,
   getAllUsers,
@@ -7,8 +8,11 @@ import {
   loginUser,
   logoutUser,
   registrationUser,
+  resendActivationCode,
+  resetPassMail,
   socialAuth,
   updateAccessToken,
+  updateNewPassword,
   updatePassword,
   updateProfilePicture,
   updateUserInfo,
@@ -21,23 +25,27 @@ const userRouter = express.Router();
 
 userRouter.post("/registration", registrationUser);
 
+userRouter.post("/resend-activation", resendActivationCode);
+
+userRouter.post("/reset-pass", resetPassMail);
+
 userRouter.post("/activate-user", activateUser);
+
+userRouter.post("/new-pass", NewPass);
+
+userRouter.put("/update-new-password", updateNewPassword);
 
 userRouter.post("/login", loginUser);
 
 userRouter.get("/logout",isAutheticated, logoutUser);
 
-userRouter.get("/me", 
-isAutheticated, 
-getUserInfo);
+userRouter.get("/me", isAutheticated, getUserInfo);
 
 userRouter.post("/getInfo", 
 isAutheticated, 
 getUserInformation);
 
-
 userRouter.get("/refresh", updateAccessToken);
-
 
 userRouter.post("/social-auth", socialAuth);
 

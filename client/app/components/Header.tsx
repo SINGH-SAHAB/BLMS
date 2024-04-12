@@ -7,6 +7,7 @@ import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp";
+import ForgetPasswordPage from "../components/Auth/Forget";
 import Verification from "../components/Auth/Verification";
 import Image from "next/image";
 import avatar from "../../public/assests/avatar.png";
@@ -17,7 +18,9 @@ import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./Loader/Loader";
 import { useRouter } from "next/navigation";
 import { BiSearch } from "react-icons/bi";
-import { userLoggedIn } from "@/redux/features/auth/authSlice";
+import PassVerification from "./Auth/passverification";
+import NewPassword from "./Auth/newPassword";
+
 
 type Props = {
   open: boolean;
@@ -26,6 +29,7 @@ type Props = {
   route: string;
   setRoute: (route: string) => void;
 };
+
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [search,setSearch] = useState("");
   const router = useRouter()
@@ -36,7 +40,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
   const [logout, setLogout] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Flag variable to track login status
 
   useEffect(() => {
     const handleEnterKeyPress = (e: { key: string; }) => {
@@ -51,11 +54,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       window.removeEventListener("keydown", handleEnterKeyPress);
     };
   }, [search]);
-
-  useEffect(() => {
-    // Update isLoggedIn based on user authentication status
-    setIsLoggedIn(!!userData); // Set to true if userData exists, otherwise false
-  }, [userData]);
 
   const handleSearch = () => {
     if (search === "") {
@@ -94,7 +92,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 85) {
+      if (window.scrollY > 0) {
         setActive(true);
       } else {
         setActive(false);
@@ -109,8 +107,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       }
     }
   };
-
-  // console.log("Is user logged in?", isLoggedIn); // Print the value of isLoggedIn in the console
 
   return (
    <>
@@ -265,6 +261,47 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           )}
         </>
       )}
+
+      {route === "ForgotPassword" && (
+              <>
+                {open && (
+                  <CustomModal
+                    open={open}
+                    setOpen={setOpen}
+                    setRoute={setRoute}
+                    activeItem={activeItem}
+                    component={ForgetPasswordPage}
+                  />
+                )}
+              </>
+            )}  
+        {route === "Change-Password" && (
+                      <>
+                        {open && (
+                          <CustomModal
+                            open={open}
+                            setOpen={setOpen}
+                            setRoute={setRoute}
+                            activeItem={activeItem}
+                            component={NewPassword}
+                          />
+                        )}
+                      </>
+                    )}  
+
+        {route === "pass-verificaion" && (
+                      <>
+                        {open && (
+                          <CustomModal
+                            open={open}
+                            setOpen={setOpen}
+                            setRoute={setRoute}
+                            activeItem={activeItem}
+                            component={PassVerification}
+                          />
+                        )}
+                      </>
+                    )} 
 
       {route === "Verification" && (
         <>

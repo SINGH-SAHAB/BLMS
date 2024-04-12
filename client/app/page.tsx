@@ -58,7 +58,9 @@ const Page: FC<Props> = (props) => {
             {console.log("User is not logged in")} {/* Log statement */}
           </>
         )}
-
+        <Courses />
+        <Reviews />
+        <FAQ />
 
       {/* <Attendance /> */}
       

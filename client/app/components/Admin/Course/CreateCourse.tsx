@@ -230,20 +230,20 @@ const CreateCourse = (props: Props) => {
           url: "",
         },
       ],
-      suggestion: "",
-      testsQuestions: [
-        {
-          question: "",
-          options: [
-            {
-              optionText: "",
-              isCorrect: boolean,
-            },
-          ],
-          currectAnswer: "",
-          marks: 0,
-        },
-      ],
+      // suggestion: "",
+      // testsQuestions: [
+      //   {
+      //     question: "",
+      //     options: [
+      //       {
+      //         optionText: "",
+      //         isCorrect: boolean,
+      //       },
+      //     ],
+      //     currectAnswer: "",
+      //     marks: 0,
+      //   },
+      // ],
       // notes: [
       //   {
       //     courseName: "",
@@ -256,7 +256,7 @@ const CreateCourse = (props: Props) => {
       //   ],
       //   }
       // ],
-      notes:""
+      //notes:""
     },
   ]);
 
@@ -300,7 +300,7 @@ const CreateCourse = (props: Props) => {
         //       url: notess.url,
         //   }))
         // })),
-        notes : courseContent.notes,
+       // notes : courseContent.notes,
 
         // testsQuestions: courseContent.testsQuestions.map((testsQuestion) => ({
         //   question: testsQuestion.question,
@@ -312,15 +312,7 @@ const CreateCourse = (props: Props) => {
         //   marks: testsQuestion.marks,
         // })),
 
-        testsQuestions: courseContent.testsQuestions.map((testQuestions) => ({
-          question: testQuestions.question,
-          options: testQuestions.options.map((option) => ({
-            optionText: option.optionText,
-            isCorrect: option.isCorrect,
-          })),
-          currectAnswer: testQuestions.currectAnswer,
-          marks: testQuestions.marks,
-        })),
+        
       })
     );
 
