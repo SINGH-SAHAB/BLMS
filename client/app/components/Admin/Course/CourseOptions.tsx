@@ -44,14 +44,14 @@ const CourseOptions: FC<Props> = ({ active, setActive, onDelete }) => {
                     >
                         {option}
                     </h5>
-                    {index !== options.length - 1 && (
+                    {/* {index !== options.length - 1 && (
                         <button
                             className="ml-2 flex items-center justify-center rounded-full bg-red-500 text-white w-8 h-8"
                             onClick={() => onDelete(index)} // Call onDelete function with index
                         >
                             <IoMdClose className="text-[20px]" />
                         </button>
-                    )}
+                    )} */}
                 </div>
             ))}
         </div>

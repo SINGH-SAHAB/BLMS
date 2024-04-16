@@ -85,7 +85,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
       phoneNumber: " ",
       password: "",
       confirmPassword: "",
-      role: " ",
+      role: "student",
     },
     validationSchema: schema,
     onSubmit: async ({ name, email, phoneNumber, password, role }) => {
@@ -176,7 +176,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
           )}
         </div>
 
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="role">
             Select your role
           </label>
@@ -198,7 +198,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
           {errors.role && touched.role && (
             <span className="text-red-500 pt-2 block">{errors.role}</span>
           )}
-        </div>
+        </div> */}
         <div className="w-full mt-5 relative mb-1">
           <label className={`${styles.label}`} htmlFor="password">
             Enter your password

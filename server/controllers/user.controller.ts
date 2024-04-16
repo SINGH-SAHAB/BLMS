@@ -49,7 +49,7 @@ export const registrationUser = CatchAsyncError(
         email,
         phoneNumber,
         password,
-        role,
+        role:"student",
       };
 
       const activationToken = createActivationToken(user);
