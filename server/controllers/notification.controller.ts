@@ -1,4 +1,6 @@
+
 import NotificationModel, { INotification } from "../models/notification.Model";
+import AdminNotification, { IAdminNotif } from "../models/adminNotif.model";
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
@@ -8,7 +10,7 @@ import userModel from "../models/user.model";
 export const getNotifications = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const notifications = await NotificationModel.find().sort({
+      const notifications = await AdminNotification.find().sort({
         createdAt: -1,
       });
 
@@ -26,18 +28,21 @@ export const getNotifications = CatchAsyncError(
 export const updateNotification = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const notification = await NotificationModel.findById(req.params.id);
+      const { id } = req.body;
+
+      const notification = await AdminNotification.findById(id);
       if (!notification) {
         return next(new ErrorHandler("Notification not found", 404));
       } else {
+        console.log("Notification Title:", notification.title); // Log the notification title
         notification.status
           ? (notification.status = "read")
           : notification?.status;
       }
-
+      
       await notification.save();
 
-      const notifications = await NotificationModel.find().sort({
+      const notifications = await AdminNotification.find().sort({
         createdAt: -1,
       });
 
@@ -50,6 +55,7 @@ export const updateNotification = CatchAsyncError(
     }
   }
 );
+
 
 // delete notification --- only admin
 cron.schedule("0 0 0 * * *", async() => {
@@ -76,8 +82,8 @@ export const TeacherVerificationNotification = CatchAsyncError(
         user: user,
       });
       // Create a new notification for teacher verification request
-      const newNotification: INotification = await NotificationModel.create({
-        title: `Teacher Verification Request by ${user.name}`,
+      const newNotification: IAdminNotif = await AdminNotification.create({
+        title: `Instructor Verification Request by ${user.name}`,
         message:"click here to verify",
         userId:userID // Add the user ID to the notification
       }); 
