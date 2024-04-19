@@ -129,7 +129,13 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 href={"/"}
                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
               >
-                Elearning
+
+                <img 
+                src="https://res.cloudinary.com/digbjrzel/image/upload/v1712661087/BINARAMA_LOGO_1_jflthj.png" 
+                alt="Binarama"
+                style={{ marginBottom:'10px',marginLeft:'-55px', width: '300px', height: 'auto' }}
+                />
+
               </Link>
             </div>
  
