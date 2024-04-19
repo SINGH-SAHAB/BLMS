@@ -11,6 +11,7 @@ import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
 import { rateLimit } from 'express-rate-limit'
+import doubtRouter from "./routes/doubt.route";
 
 // body parser
 app.use(express.json({ limit: "50mb" }));
@@ -44,7 +45,8 @@ app.use(
   courseRouter,
   notificationRouter,
   analyticsRouter,
-  layoutRouter
+  layoutRouter,
+  doubtRouter,
 );
 
 // testing api
