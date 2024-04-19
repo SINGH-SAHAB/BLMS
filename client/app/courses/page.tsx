@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState, Suspense } from "react";
 import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState, Suspense } from "react";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header";
 import Heading from "../utils/Heading";
+import { styles } from "../styles/style";
 import CourseCard from "../components/Course/CourseCard";
 import Footer from "../components/Footer";
 
@@ -18,124 +19,100 @@ const Page = (props: Props) => {
   const { data: categoriesData } = useGetHeroDataQuery("Categories", {});
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
-  const [courses, setCourses] = useState([]);
+  const [courses, setcourses] = useState([]);
   const [category, setCategory] = useState("All");
-  const [, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
     if (category === "All") {
-      setCourses(data?.courses);
-    } else {
-      setCourses(data?.courses.filter((item: any) => item.categories === category));
+      setcourses(data?.courses);
     }
-
+    if (category !== "All") {
+      setcourses(
+        data?.courses.filter((item: any) => item.categories === category)
+      );
+    }
     if (search) {
-      setCourses(data?.courses.filter((item: any) => item.name.toLowerCase().includes(search.toLowerCase())));
+      setcourses(
+        data?.courses.filter((item: any) =>
+          item.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
     }
   }, [data, category, search]);
 
-  const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prevCategories => {
-      if (prevCategories.includes(category)) {
-        return prevCategories.filter((cat: string) => cat !== category);
-      } else {
-        return [...prevCategories, category];
-      }
-    });
-  };
-
-  const clearFilters = () => {
-    setCategory("All");
-    setSelectedCategories([]);
-  };
+  // const categories = categoriesData?.layout.categories;
+  const categories = categoriesData?.layout?.categories ?? []; // Use default value if null or undefined
 
   return (
     <div>
-      <Header
-        route={route}
-        setRoute={setRoute}
-        open={open}
-        setOpen={setOpen}
-        activeItem={1}
-      />
-      <div style={{ borderTop: "1px solid #ccc" }}></div>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            width: "20%",
-            backgroundColor: "#e0e0e0",
-            padding: "20px",
-          }}
-        >
-          <Heading title={"Filter"} description={""} keywords={""} />
-          <div style={{ marginBottom: "10px" }}>
-            <div
-              style={{
-                padding: "5px 10px",
-                backgroundColor: category === "All" ? "#5050cb" : "transparent",
-                color: category === "All" ? "white" : "black",
-                borderRadius: "5px",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-              }}
-              onClick={() => setCategory("All")}
-            >
-              All
-            </div>
-            {categoriesData?.layout?.categories.map((item: any, index: number) => {
-              if (item.title !== "All") {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      padding: "5px 10px",
-                      backgroundColor: category === item.title ? "#5050cb" : "transparent",
-                      color: category === item.title ? "white" : "black",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                      transition: "background-color 0.3s",
-                    }}
-                    onClick={() => setCategory(item.title)}
-                  >
-                    {item.title}
-                  </div>
-                );
-              }
-            })}
-          </div>
-          <button
-            style={{
-              padding: "5px 10px",
-              backgroundColor: "#ff4d4f",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              transition: "background-color 0.3s",
-            }}
-            onClick={clearFilters}
-          >
-            Clear Filters
-          </button>
-        </div>
-        <div style={{ width: "80%", paddingLeft: "20px" }}>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Suspense fallback={<div>Loading...</div>}>
-              <div className="course-cards" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
-                {courses && courses.length === 0 && (
-                  <p>No courses found!</p>
-                )}
-                {courses && courses.map((item: any, index: number) => (
-                  <CourseCard item={item} key={index} />
-                ))}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Suspense fallback={<div>Loading...</div>}>
+          <>
+            <Header
+              route={route}
+              setRoute={setRoute}
+              open={open}
+              setOpen={setOpen}
+              activeItem={1}
+            />
+            <div className="w-[95%] 800px:w-[85%] m-auto min-h-[70vh]">
+              <Heading
+                title={"All courses - Elearning"}
+                description={"Elearning is a programming community."}
+                keywords={
+                  "programming community, coding skills, expert insights, collaboration, growth"
+                }
+              />
+              <br />
+              <div className="w-full flex items-center flex-wrap">
+                <div
+                  className={`h-[35px] ${
+                    category === "All" ? "bg-[crimson]" : "bg-[#5050cb]"
+                  } m-3 px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
+                  onClick={() => setCategory("All")}
+                >
+                  All
+                </div>
+                {categories &&
+                  categories.map((item: any, index: number) => (
+                    <div key={index}>
+                      <div
+                        className={`h-[35px] ${
+                          category === item.title
+                            ? "bg-[crimson]"
+                            : "bg-[#5050cb]"
+                        } m-3 px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
+                        onClick={() => setCategory(item.title)}
+                      >
+                        {item.title}
+                      </div>
+                    </div>
+                  ))}
               </div>
-            </Suspense>
-          )}
-        </div>
-      </div>
-      <Footer />
+              {courses && courses.length === 0 && (
+                <p
+                  className={`${styles.label} justify-center min-h-[50vh] flex items-center`}
+                >
+                  {search
+                    ? "No courses found!"
+                    : "No courses found in this category. Please try another one!"}
+                </p>
+              )}
+              <br />
+              <br />
+              <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 1500px:grid-cols-4 1500px:gap-[35px] mb-12 border-0">
+                {courses &&
+                  courses.map((item: any, index: number) => (
+                    <CourseCard item={item} key={index} />
+                  ))}
+              </div>
+            </div>
+            <Footer />
+          </>
+        </Suspense>
+      )}
     </div>
   );
 };
