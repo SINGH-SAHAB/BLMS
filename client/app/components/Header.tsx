@@ -2,8 +2,7 @@
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import NavItems from "../utils/NavItems";
-import { ThemeSwitcher } from "../utils/ThemeSwitcher";
-import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
+import { HiOutlineBell, HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp";
@@ -20,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { BiSearch } from "react-icons/bi";
 import PassVerification from "./Auth/passverification";
 import NewPassword from "./Auth/newPassword";
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Button from 'react-bootstrap/Button';
 
 
 type Props = {
@@ -29,6 +30,35 @@ type Props = {
   route: string;
   setRoute: (route: string) => void;
 };
+const OffCanvasExample: FC<{ icon: JSX.Element }> = ({ icon }) => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const toggleShow = () => setShow((s) => !s);
+
+  return (
+    <>
+      <Button variant="link" onClick={toggleShow}>
+        {icon}
+      </Button>
+      <Offcanvas 
+        show={show} 
+        onHide={handleClose} 
+        placement="end" // Position the OffCanvas on the right side
+        style={{ width: '300px' }} // Set a width for the OffCanvas
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Notifications</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          {/* Notification content goes here */}
+          No new notifications.
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
+  );
+};
+
 
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [search,setSearch] = useState("");
@@ -40,6 +70,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
   const [logout, setLogout] = useState(false);
+
+  
 
   useEffect(() => {
     const handleEnterKeyPress = (e: { key: string; }) => {
@@ -126,9 +158,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           <div className="w-full h-[80px] flex items-center justify-between p-3">
             <div>
               <Link
-                href={"/"}
-                className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
-              >
+                href={"/"}>
                 <img 
                 src="https://res.cloudinary.com/digbjrzel/image/upload/v1712661087/BINARAMA_LOGO_1_jflthj.png" 
                 alt="Binarama"
@@ -160,7 +190,11 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
             <div className="flex items-center">
               {/* <NavItems activeItem={activeItem} isMobile={false} /> */}
               
-              <ThemeSwitcher />
+              {/* OffCanvas Example: Enable both scrolling & backdrop */}
+              {/* Notification Icon */}
+              <div className="me-2">
+                <OffCanvasExample icon={<HiOutlineBell size={24} />} />
+              </div>
               {/* only for mobile */}
               <div className="800px:hidden">
                 <HiOutlineMenuAlt3
@@ -204,25 +238,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           >
             <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              {/* {userData?.user ? (
-                <Link href={"/profile"}>
-                  <Image
-                    src={userData?.user.avatar ? userData.user.avatar.url : avatar}
-                    alt=""
-                    width={30}
-                    height={30}
-                    className="w-[30px] h-[30px] rounded-full ml-[20px] cursor-pointer"
-                    style={{border: activeItem === 5 ? "2px solid #37a39a" : "none"}}
-                  />
-                </Link>
-              ) : (
 
-                <HiOutlineUserCircle
-                  size={25}
-                  className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                  onClick={() => setOpen(true)}
-                />
-              )} */}
             <HiOutlineUserCircle
              size={25}
              className="cursor-pointer ml-5 my-2 text-black dark:text-white "
@@ -237,6 +253,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           </div>
         )}
       </div>
+
+
       {route === "Login" && (
         <>
           {open && (
@@ -265,6 +283,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           )}
         </>
       )}
+      
+      
 
       {route === "ForgotPassword" && (
               <>
@@ -320,9 +340,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           )}
         </>
       )}
+
     </div>
-    )
-   }
+    )}
    </>
   );
 };
