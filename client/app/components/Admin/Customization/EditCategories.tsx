@@ -20,8 +20,12 @@ const EditCategories = (props: Props) => {
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
-    if (data) {
-      setCategories(data.layout.categories);
+    if (data && data.layout ) {
+      setCategories(data.layout.categories || []);
+    } 
+    else {
+      // If data.layout.categories is null, set an empty array as a default value
+      setCategories([]);
     }
     if (layoutSuccess) {
         refetch();
