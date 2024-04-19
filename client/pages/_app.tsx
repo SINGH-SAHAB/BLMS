@@ -16,17 +16,22 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 import { AppProps } from 'next/app';
 import { api } from '../redux/features/layout/api';
+import { SessionProvider } from 'next-auth/react';
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <SessionProvider session={pageProps.session}>
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
+      {/* <Hydrate state={pageProps.dehydratedState}> */}
+      
         <Component {...pageProps} />
-      </Hydrate>
+      
+      {/* </Hydrate> */}
       <ReactQueryDevtools />
     </QueryClientProvider>
+    </SessionProvider>
   );
 }
 
