@@ -19,9 +19,9 @@ const VerificationNotif: React.FC<VerificationNotifProps> = ({ show, onClose, us
 
  const handleApprove = async () => {
     try {
-      await updateUserRole({ userId, role: 'teacher' });
+      await updateUserRole({ userId, role:'instructor' });
       // Handle success, e.g., show a success message or close the modal
-      toast.success("Role is updated to Teacher");
+      toast.success("Role is updated to Instructor successfully");
       onClose();
     } catch (error) {
       // Handle error, e.g., show an error message

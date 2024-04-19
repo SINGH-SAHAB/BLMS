@@ -129,21 +129,23 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 href={"/"}
                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
               >
+
                 <img 
                 src="https://res.cloudinary.com/digbjrzel/image/upload/v1712661087/BINARAMA_LOGO_1_jflthj.png" 
                 alt="Binarama"
                 style={{ marginBottom:'10px',marginLeft:'-55px', width: '300px', height: 'auto' }}
                 />
+
               </Link>
             </div>
  
                  
-            <div >
+            <div className="flex items-center">
               <NavItems activeItem={activeItem} isMobile={false} />
               </div>
                
               <div className="1500px:w-[35%] 1100px:w-[38%] w-[40%] h-[35px] bg-transparent relative">
-          <input style={{width:'300px',marginLeft:'100px'}}
+          <input
             type="search"
             placeholder="Search Courses..."
             value={search}
