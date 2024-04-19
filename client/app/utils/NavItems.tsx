@@ -17,7 +17,7 @@ export const navItemsData = [
     url: "/about",
   },
   {
-    name: "Contact us",
+    name: "ContactUs",
     url: "/contact",
   },
 
