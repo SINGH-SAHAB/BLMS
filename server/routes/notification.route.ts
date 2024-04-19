@@ -9,12 +9,16 @@ notificationRoute.get(
   authorizeRoles("admin"),
   getNotifications
 );
-notificationRoute.put("/update-notifications/:id", isAutheticated, authorizeRoles("admin"), updateNotification);
+
+notificationRoute.put("/update-notifications", 
+// isAutheticated, 
+// authorizeRoles("admin"), 
+updateNotification);
 
 notificationRoute.post(
   "/teacher-verification-notification",
    isAutheticated,
-   authorizeRoles("admin"),
+  //  authorizeRoles("admin"),
   TeacherVerificationNotification
 );
 

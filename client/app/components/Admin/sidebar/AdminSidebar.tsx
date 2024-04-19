@@ -208,7 +208,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Create Course"
-              to="/admin/create-course"
+              to="/admin/Disclaimer"
               icon={<VideoCallIcon />}
               selected={selected}
               setSelected={setSelected}

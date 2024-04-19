@@ -59,6 +59,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
  }, [playNotificationSound, refetch]);
 
  const handleNotificationStatusChange = async (id: string) => {
+  console.log('Notification ID:', id); 
     await updateNotificationStatus(id);
  };
 
@@ -98,7 +99,10 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                  <p className="text-black dark:text-white pl-2">{item.title}</p>
                  <p
                     className="text-black dark:text-white cursor-pointer"
-                    onClick={() => handleNotificationStatusChange(item._id)}
+                    onClick={() => {
+                      console.log('Notification item clicked');
+                      handleNotificationStatusChange(item._id);
+                    }}
                  >
                     Mark as read
                  </p>
