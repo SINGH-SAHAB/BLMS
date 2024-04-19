@@ -7,6 +7,7 @@ import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp";
+import ForgetPasswordPage from "../components/Auth/Forget";
 import Verification from "../components/Auth/Verification";
 import Image from "next/image";
 import avatar from "../../public/assests/avatar.png";
@@ -17,6 +18,9 @@ import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./Loader/Loader";
 import { useRouter } from "next/navigation";
 import { BiSearch } from "react-icons/bi";
+import PassVerification from "./Auth/passverification";
+import NewPassword from "./Auth/newPassword";
+
 
 type Props = {
   open: boolean;
@@ -88,7 +92,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
-      if (window.scrollY >0) {
+      if (window.scrollY > 0) {
         setActive(true);
       } else {
         setActive(false);
@@ -122,7 +126,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           <div className="w-full h-[80px] flex items-center justify-between p-3">
             <div>
               <Link
-                href={'/'}
+                href={"/"}
                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
               >
                 <img 
@@ -130,14 +134,13 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 alt="Binarama"
                 style={{ marginBottom:'10px',marginLeft:'-55px', width: '300px', height: 'auto' }}
                 />
-                
               </Link>
             </div>
  
                  
             <div >
-              <NavItems activeItem={activeItem} isMobile={false}/>
-            </div>
+              <NavItems activeItem={activeItem} isMobile={false} />
+              </div>
                
               <div className="1500px:w-[35%] 1100px:w-[38%] w-[40%] h-[35px] bg-transparent relative">
           <input style={{width:'300px',marginLeft:'100px'}}
@@ -262,6 +265,47 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           )}
         </>
       )}
+
+      {route === "ForgotPassword" && (
+              <>
+                {open && (
+                  <CustomModal
+                    open={open}
+                    setOpen={setOpen}
+                    setRoute={setRoute}
+                    activeItem={activeItem}
+                    component={ForgetPasswordPage}
+                  />
+                )}
+              </>
+            )}  
+        {route === "Change-Password" && (
+                      <>
+                        {open && (
+                          <CustomModal
+                            open={open}
+                            setOpen={setOpen}
+                            setRoute={setRoute}
+                            activeItem={activeItem}
+                            component={NewPassword}
+                          />
+                        )}
+                      </>
+                    )}  
+
+        {route === "pass-verificaion" && (
+                      <>
+                        {open && (
+                          <CustomModal
+                            open={open}
+                            setOpen={setOpen}
+                            setRoute={setRoute}
+                            activeItem={activeItem}
+                            component={PassVerification}
+                          />
+                        )}
+                      </>
+                    )} 
 
       {route === "Verification" && (
         <>

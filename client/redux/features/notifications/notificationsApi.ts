@@ -16,10 +16,19 @@ export const notificationsApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    verificationNotification: builder.mutation({
+      query: (data) => ({
+        url: "/teacher-verification-notification",
+        method: "POST",
+        body: data,
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllNotificationsQuery,
   useUpdateNotificationStatusMutation,
+  useVerificationNotificationMutation,
 } = notificationsApi;

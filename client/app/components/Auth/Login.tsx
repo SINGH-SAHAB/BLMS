@@ -17,9 +17,9 @@ type Props = {
 
 const schema = Yup.object().shape({
   email: Yup.string()
-    .email("Invalid email!")
-    .required("Please enter your email!"),
-  password: Yup.string().required("Please enter your password!").min(6),
+    .email("Invalid email!"),
+  //  .required("Please enter your email!"),
+  password: Yup.string(),//.required("Please enter your password!").min(6),
 });
 
 const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
@@ -50,6 +50,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   }, [isSuccess, error, setOpen, refetch]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
 
   return (
     <div className="w-full">
@@ -110,25 +111,25 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
 
         </div>
         <div className="flex justify-end">
-          <button
+          <span
             className="text-blue-500 underline cursor-pointer mt-2 mr-2"
-            onClick={() => setRoute("")}
+            onClick={() => setRoute("ForgotPassword")}
           >
             Forgot Password?
-          </button>
+          </span>
         </div>
 
         <div className="w-full mt-5">
           <input type="submit" value="Login" className={`${styles.button}`} />
         </div>
         <br />
-        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
+        {/* <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
           Or join with
         </h5>
         <div className="flex items-center justify-center my-3">
           <FcGoogle size={30} className="cursor-pointer mr-2" onClick={() => signIn("google")} />
           <AiFillGithub size={30} className="cursor-pointer ml-2" onClick={() => signIn("github")} />
-        </div>
+        </div> */}
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
           Not have any account?{" "}
           <span
@@ -139,10 +140,9 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           </span>
         </h5>
       </form>
-      <br />
 
       {/* Rendering ForgetPasswordPage conditionally */}
-      {showForgetPassword && <ForgetPasswordPage />}
+     {/* {showForgetPassword && <ForgetPasswordPage />}*/}
     </div>
   );
 };

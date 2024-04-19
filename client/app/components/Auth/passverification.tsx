@@ -1,5 +1,5 @@
 import { styles } from "@/app/styles/style";
-import { useActivationMutation, useResendCodeMutation } from "@/redux/features/auth/authApi";
+import { useActivationMutation, useNewpassMutation, useResendCodeMutation } from "@/redux/features/auth/authApi";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
@@ -18,12 +18,9 @@ type VerifyNumber = {
   "3": string;
 };
 
-const Verification: FC<Props> = ({ setRoute }) => {
+const PassVerification: FC<Props> = ({ setRoute }) => {
   const { token } = useSelector((state: any) => state.auth);
-  const [activation, { isSuccess, error }] = useActivationMutation();
-  const [timer, setTimer] = useState<number>(60);
-  const [resendDisabled, setResendDisabled] = useState<boolean>(false);
-  const [resendcode, { isLoading: isResendLoading }]=useResendCodeMutation();
+  const [activation, { isSuccess, error }] = useNewpassMutation();
   const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
     0: "",
     1: "",
@@ -35,8 +32,8 @@ const Verification: FC<Props> = ({ setRoute }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Account activated successfully");
-      setRoute("Login");
+      toast.success("OTP Verified");
+      setRoute("Change-Password");
       //alert ("welcome");
     }
     if (error) {
@@ -49,25 +46,6 @@ const Verification: FC<Props> = ({ setRoute }) => {
       }
     }
   }, [isSuccess, error, setRoute]);
-
-
-  useEffect(() => {
-    let timerInterval: NodeJS.Timeout | null = null;
-
-    if (timer > 0) {
-      timerInterval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    } else {
-      setResendDisabled(false);
-      if (timerInterval) clearInterval(timerInterval);
-    }
-
-    return () => {
-      if (timerInterval) clearInterval(timerInterval);
-    };
-  }, [timer]);
-
 
 
   const inputRefs = [
@@ -100,24 +78,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
     }
   };
 
-  const handleResendCode = async () => {
-    setResendDisabled(true);
-    setTimer(60);
-    
-    // Call the verificationHandler function to handle resending the code
-    {verificationHandler}
-    try {
-      console.log("checking")
-      await resendcode({ activation_token: token });
-     // console.log({ activation_token: token });
-     // console.log("checking")
-      toast.success("Verification code resent successfully.");
-    } catch (error) {
-      // Handle errors if resend fails
-      toast.error("Failed to resend verification code. Please try again.");
-      console.error("Error resending verification code:", error);
-    }
-  };
+  
   
 
   return (
@@ -160,23 +121,8 @@ const Verification: FC<Props> = ({ setRoute }) => {
         </button>
       </div>
       <br />
-      <div className="w-full flex justify-center">
-        {timer > 0 && (
-          <p className="text-sm text-gray-500">
-            Resend code available in {timer} seconds
-          </p>
-        )}
-        {timer === 0 && (
-          <button
-            className={`${styles.button} text-sm`}
-            onClick={handleResendCode}
-            disabled={resendDisabled}
-          >
-            Resend Code
-          </button>
-        )}
-      </div>
-      <br />
+     
+   
       <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
         Go back to sign in?{" "}
         <span
@@ -190,4 +136,4 @@ const Verification: FC<Props> = ({ setRoute }) => {
   );
 };
 
-export default Verification;
+export default PassVerification;

@@ -7,12 +7,14 @@ import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
 import CourseCard from "../Course/CourseCard";
 import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
+import TeacherVerification from "./TeacherVerification";
 
 type Props = {
   user: any;
 };
 
 const Profile: FC<Props> = ({ user }) => {
+  const [showTeacherVerification, setShowTeacherVerification] = useState(false);
   const [scroll, setScroll] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [logout, setLogout] = useState(false);
@@ -29,6 +31,11 @@ const Profile: FC<Props> = ({ user }) => {
     setLogout(true);
     await signOut();
   };
+
+  const toggleTeacherVerification = () => {
+    setShowTeacherVerification((prev) => !prev);
+  };
+  
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -64,6 +71,7 @@ const Profile: FC<Props> = ({ user }) => {
           avatar={avatar}
           setActive={setActive}
           logOutHandler={logOutHandler}
+          toggleTeacherVerification={toggleTeacherVerification}
         />
       </div>
       {active === 1 && (
@@ -92,6 +100,9 @@ const Profile: FC<Props> = ({ user }) => {
             </h1>
           )}
         </div>
+      )}
+      {showTeacherVerification && (
+        <TeacherVerification onClose={toggleTeacherVerification} />
       )}
     </div>
   );

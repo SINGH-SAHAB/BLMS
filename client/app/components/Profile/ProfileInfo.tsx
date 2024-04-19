@@ -3,7 +3,10 @@ import { styles } from "../../../app/styles/style";
 import React, { FC, useEffect, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import avatarIcon from "../../../public/assests/avatar.png";
-import {useEditProfileMutation,useUpdateAvatarMutation,} from "@/redux/features/user/userApi";
+import {
+  useEditProfileMutation,
+  useUpdateAvatarMutation,
+} from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
 
@@ -33,6 +36,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     };
     fileReader.readAsDataURL(e.target.files[0]);
   };
+
   useEffect(() => {
     if (isSuccess) {
       setLoadUser(true);
@@ -45,6 +49,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       setLoadUser(true);
     }
   }, [isSuccess, error,success, updateError]);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (name !== "") {
@@ -53,6 +58,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       });
     }
   };
+
   const handleSubmitPhone = async (phone: any) => {
     phone.preventDefault();
     if (phoneNumber !== "") {
@@ -61,6 +67,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       });
     }
   };
+
   return (
     <>
       <div className="w-full flex justify-center">
@@ -140,7 +147,3 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
 };
 
 export default ProfileInfo;
-
-// ProfileInfo.tsx
-
-

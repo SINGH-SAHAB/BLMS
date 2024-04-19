@@ -17,8 +17,12 @@ import {
   getAllUsersService,
   getUserById,
   updateUserRoleService,
+  getUserIdByEmailMobileAndName
+
 } from "../services/user.service";
 import cloudinary from "cloudinary";
+import { Interface } from "readline";
+// import userModel from "../models/user.model";
 
 // register user
 interface IRegistrationBody {
@@ -80,6 +84,122 @@ export const registrationUser = CatchAsyncError(
   }
 );
 
+//forgot pass mail
+export const resetPassMail = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body;
+
+    // Check if the user with the provided email exists
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Email already exists" });
+    }
+
+    // Prepare user data for token creation
+    const userData = {
+      name: "", // Provide user name if necessary
+      email: email,
+      phoneNumber: 2, // Provide user phone number if necessary
+      password: "", // Provide user password if necessary
+      role: "", // Provide user role if necessary
+    };
+
+    // Create a new activation token
+    const activationToken = createActivationToken(userData);
+
+    // Render email template
+    const data = {
+      user: { email },
+      activationCode: activationToken.activationCode
+    };
+    const html = await ejs.renderFile(
+      path.join(__dirname, "../mails/reset-pass-mail.ejs"),
+      data
+    );
+
+    // Prepare mail data
+    const mailData = {
+      email,
+      subject: "Reset Password",
+      template: "reset-pass-mail.ejs",
+      data: { user: { email }, activationCode: activationToken.activationCode }
+    };
+
+    // Send reset password mail
+    await sendMail(mailData);
+
+    // Send response
+    res.status(200).json({
+      success: true,
+      message: `Reset password instructions have been sent to ${email}`,
+      activationToken: activationToken.token,
+    });
+  } catch (error: any) {
+    next(new ErrorHandler(error.message || "Failed to send reset password email", 400));
+  }
+};
+
+// Add the resendActivationCode function here
+
+export const resendActivationCode = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+
+    const { activation_token, activation_code } = req.body as IActivationRequest
+
+    if (!activation_token) {
+      return next(new ErrorHandler(`Activation token is required: ${activation_token}`, 400));
+    }
+
+    const decodedToken = jwt.verify(activation_token, process.env.ACTIVATION_SECRET as string) as {
+      user: any; email: string 
+      };
+      const decodedDetail = decodedToken.user;
+      console.log('Decoded Token:', decodedDetail);
+
+      const  email  = decodedToken.user.email;
+      console.log('Email:', email);
+
+   //   const email  = req.body;
+
+      // Check if the user with the provided email exists
+      const User: IUser | null = await userModel.findOne({ email });
+      if (User) {
+        return next(new ErrorHandler("Email already exist", 400));
+       }
+
+      // Create a new activation token
+      const activationToken = createActivationToken(decodedDetail);
+      
+      const activationCode = activationToken.activationCode;
+      const data = { user: email , activationCode };
+      const html = await ejs.renderFile(
+        path.join(__dirname, "../mails/activation-mail.ejs"),
+        data
+      );
+
+      // Prepare mail data
+      const mailData = {
+          email,
+          subject: "Resend Activation Code",
+          template: "activation-mail.ejs", // Assuming you have a template for activation mail
+          data: { user: { email }, activationCode: activationToken.activationCode }
+      };
+
+      // Send activation mail
+      await sendMail(mailData);
+
+      // Send response
+      res.status(200).json({
+          success: true,
+          message: `Activation code has been resent to ${email}`,
+          activationToken: activationToken.token,
+      });
+  } catch (error: any) {
+      next(new ErrorHandler(error.message || "Failed to resend activation code", 400));
+  }
+};
+
+
 interface IActivationToken {
   token: string;
   activationCode: string;
@@ -137,22 +257,111 @@ export const activateUser = CatchAsyncError(
         password,
         role,
       });
-       // Redirect to role-specific page
-       if (user.role === 'student') {
-        res.redirect('/student/dashboard');
-      } else if (user.role === 'instructor') {
-        res.redirect('/instructor/dashboard');
-      } else {
-        // Handle other roles or invalid roles
-        res.status(400).json({ success: false, message: 'Invalid role' });
-      }
+
+      res.status(201).json({
+        success: true,
+        
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
   }
 );
 
+//forgot password verify otp
+interface Iuser{
+  email: string;
+}
+
+export const NewPass = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { activation_token, activation_code } =
+        req.body as IActivationRequest;
+      
+
+      const newUser: { user: Iuser; activationCode: string } = jwt.verify(
+        activation_token,
+        process.env.ACTIVATION_SECRET as string
+      ) as { user: Iuser; activationCode: string };
+    
+
+      if (newUser.activationCode !== activation_code) {
+        return next(new ErrorHandler("Invalid activation code", 400));
+      }
+    
+      const { email } = newUser.user;
+
+      req.body.email = email;
+
+
+      const existUser = await userModel.findOne({ email });
+
+    
+      if (!existUser) {
      
+        return next(new ErrorHandler("Email not registered", 400));
+        
+      }
+    
+
+      res.status(201).json({
+        success: true,
+       
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+     
+    }
+  }
+);
+
+
+//frogot password new password
+interface IUpdateNewPassword {
+  newPassword: string;
+  
+}
+
+export const updateNewPassword = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { newPassword } = req.body as IUpdateNewPassword;
+      const { activation_token, activation_code } = req.body as IActivationRequest
+
+      if (!activation_token) {
+        return next(new ErrorHandler(`Activation token is required: ${activation_token}`, 400));
+      }
+
+      const decodedToken = jwt.verify(activation_token, process.env.ACTIVATION_SECRET as string) as {
+        user: any; email: string 
+};
+      console.log('Decoded Token:', decodedToken);
+
+      const  email  = decodedToken.user.email;
+      console.log('Email:', email);
+
+
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return next(new ErrorHandler(`Email not registered: ${email}`, 400));
+      }
+
+      user.password = newPassword;
+      await user.save();
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+
 // Login user
 interface ILoginRequest {
   email: string;
@@ -268,7 +477,7 @@ export const updateAccessToken = CatchAsyncError(
 // get user info
 export const getUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    try {  
       const userId = req.user?._id;
       getUserById(userId, res);
     } catch (error: any) {
@@ -276,6 +485,59 @@ export const getUserInfo = CatchAsyncError(
     }
   }
 );
+// for the teacher verification
+export const getUserInformation = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {  
+      const { userID } = req.body;
+
+      if (!userID) {
+        return next(new ErrorHandler("User ID is required", 400));
+      }
+
+      const user = await userModel.findById(userID);
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+      
+      // Return the user object as the response
+      res.status(200).json({
+        success: true,
+        data: user
+      });
+
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+
+
+// export const getUserID = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     // Extract email, phoneNumber, and name from request body
+//     const { email, phoneNumber, name } = req.body;
+
+//     // Call getUserIdByEmailMobileAndName to fetch user ID
+//     const userIdResponse = await getUserIdByEmailMobileAndName(email, phoneNumber, name, res);
+
+//     // Check if the response is successful
+//     if (!!userIdResponse) {
+//       // If successful, send user ID in the response
+//       res.status(200).json({
+//         success: true,
+//         userId: userIdResponse,
+//       });
+//     } else {
+//       // If not successful, throw an error
+//       throw new ErrorHandler("User not found", 404);
+//     }
+//   } catch (error) {
+//     // Handle any errors
+//     return next(new ErrorHandler(error.message, error.status || 500));
+//   }
+// };
 
 interface ISocialAuthBody {
   email: string;
@@ -461,6 +723,26 @@ export const updateUserRole = CatchAsyncError(
     }
   }
 );
+
+export const updateUserRoleById = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+     try {
+       const { userId, role } = req.body;
+       const isUserExist = await userModel.findById(userId);
+       if (isUserExist) {
+         updateUserRoleService(res, userId, role);
+       } else {
+         res.status(400).json({
+           success: false,
+           message: "User not found",
+         });
+       }
+     } catch (error: any) {
+       return next(new ErrorHandler(error.message, 400));
+     }
+  }
+ );
+ 
 
 // Delete user --- only for admin
 export const deleteUser = CatchAsyncError(

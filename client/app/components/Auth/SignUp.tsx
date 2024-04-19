@@ -38,6 +38,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
       const message = data?.message || "Registration successful";
       toast.success(message);
       setRoute("Verification");
+     // alert ('error');
     }
     if (error) {
       if ("data" in error) {
@@ -100,14 +101,17 @@ const Signup: FC<Props> = ({ setRoute }) => {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-4">
-      <div className="flex justify-end">
-        <button onClick={() => setOpen(false)} className="outline-none">
+    
+    <div className="w-full h-[650px] flex flex-col justify-center items-center overflow-hidden">
+      
+      <div className=" absolute top-0 right-0 m-4 outline-none">
+        <button onClick={() => setRoute("Login")} className="outline-none">
           <AiOutlineClose size={24} />
         </button>
       </div>
-      <h1 className={`${styles.title}text-center mt-4`}>Join to ELearning</h1>
-      <form onSubmit={handleSubmit} className="mt-4 px-4">
+      <h1 className={`${styles.title} text-center`}>Join to ELearning</h1>
+      <div className="max-w-full overflow-y-auto" >
+      <form onSubmit={handleSubmit} className="mt-2 px-4 overflow-y-auto">
         <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="email">
             Enter your Name
@@ -227,6 +231,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
             />
           )}
         </div>
+
         {errors.password && touched.password && (
           <span className="text-red-500 pt-2 block">{errors.password}</span>
         )}
@@ -277,14 +282,18 @@ const Signup: FC<Props> = ({ setRoute }) => {
         <div className="w-full mt-5">
           <input type="submit" value="Sign Up" className={`${styles.button}`} />
         </div>
-        <h5 className="text-center pt-2 font-Poppins text-[14px] text-black dark:text-white">
+        
+      </form>
+      </div>
+      <div className=" w-full flex flex-col items-center justify-center">
+        {/* <h5 className="text-center font-Poppins text-[14px] text-black dark:text-white">
           Or join with
         </h5>
         <div className="flex items-center justify-center my-2">
           <FcGoogle size={30} className="cursor-pointer mr-2" />
           <AiFillGithub size={30} className="cursor-pointer ml-2" />
-        </div>
-        <h5 className="text-center pt-2 font-Poppins text-[14px]">
+        </div> */}
+        <h5 className="text-center font-Poppins text-[14px]">
           Already have an account?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
@@ -293,7 +302,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
             Sign in
           </span>
         </h5>
-      </form>
+      </div>
     </div>
   );
 };

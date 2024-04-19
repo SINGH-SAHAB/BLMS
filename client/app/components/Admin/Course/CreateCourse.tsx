@@ -215,6 +215,8 @@ const CreateCourse = (props: Props) => {
   });
   const [benefits, setBenefits] = useState([{ title: "" }]);
   const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+  const [targetAudience, settargetAudience] = useState([{ title: "" }]);
+  const [MaterialIncluded, setMaterialIncluded] = useState([{ title: "" }]);
   const [courseContentData, setCourseContentData] = useState([
     {
       videoUrl: "",
@@ -228,20 +230,20 @@ const CreateCourse = (props: Props) => {
           url: "",
         },
       ],
-      suggestion: "",
-      testsQuestions: [
-        {
-          question: "",
-          options: [
-            {
-              optionText: "",
-              isCorrect: boolean,
-            },
-          ],
-          currectAnswer: "",
-          marks: 0,
-        },
-      ],
+      // suggestion: "",
+      // testsQuestions: [
+      //   {
+      //     question: "",
+      //     options: [
+      //       {
+      //         optionText: "",
+      //         isCorrect: boolean,
+      //       },
+      //     ],
+      //     currectAnswer: "",
+      //     marks: 0,
+      //   },
+      // ],
       // notes: [
       //   {
       //     courseName: "",
@@ -254,7 +256,7 @@ const CreateCourse = (props: Props) => {
       //   ],
       //   }
       // ],
-      notes:""
+      //notes:""
     },
   ]);
 
@@ -268,6 +270,12 @@ const CreateCourse = (props: Props) => {
     // Format prerequisites array
     const formattedPrerequisites = prerequisites.map((prerequisite) => ({
       title: prerequisite.title,
+    }));
+    const formattedtargetAudience = targetAudience.map((targetAudience) => ({
+      title: targetAudience.title,
+    }));
+    const formattedMaterialIncluded = MaterialIncluded.map((MaterialIncluded) => ({
+      title: MaterialIncluded.title,
     }));
 
     // Format course content array
@@ -292,7 +300,7 @@ const CreateCourse = (props: Props) => {
         //       url: notess.url,
         //   }))
         // })),
-        notes : courseContent.notes,
+       // notes : courseContent.notes,
 
         // testsQuestions: courseContent.testsQuestions.map((testsQuestion) => ({
         //   question: testsQuestion.question,
@@ -304,15 +312,7 @@ const CreateCourse = (props: Props) => {
         //   marks: testsQuestion.marks,
         // })),
 
-        testsQuestions: courseContent.testsQuestions.map((testQuestions) => ({
-          question: testQuestions.question,
-          options: testQuestions.options.map((option) => ({
-            optionText: option.optionText,
-            isCorrect: option.isCorrect,
-          })),
-          currectAnswer: testQuestions.currectAnswer,
-          marks: testQuestions.marks,
-        })),
+        
       })
     );
 
@@ -330,6 +330,8 @@ const CreateCourse = (props: Props) => {
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
       prerequisites: formattedPrerequisites,
+      targetAudience:formattedtargetAudience,
+      MaterialIncluded:formattedMaterialIncluded,
       courseData: formattedCourseContentData,
     };
     setCourseData(data);
@@ -360,6 +362,10 @@ const CreateCourse = (props: Props) => {
             setBenefits={setBenefits}
             prerequisites={prerequisites}
             setPrerequisites={setPrerequisites}
+            targetAudience={targetAudience}
+            setTargetAudience={settargetAudience}
+            materialIncluded={MaterialIncluded}
+            setMaterialIncluded={setMaterialIncluded}
             active={active}
             setActive={setActive}
           />
