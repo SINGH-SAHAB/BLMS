@@ -13,11 +13,10 @@ export interface ITeacher extends Document {
   avatar: {
     public_id: string;
     url: string;
-  };
-  courseCreated: string; // Specific to teacher model
+  }; // Specific to teacher model
   role: string;
   isVerified: boolean;
-  courses: Array<{ courseId: string }>;
+  courseCreated: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
   SignAccessToken: () => string;
   SignRefreshToken: () => string;
@@ -55,10 +54,11 @@ const teacherSchema: Schema<ITeacher> = new mongoose.Schema(
       public_id: String,
       url: String,
     },
-    courseCreated: {
-      type: String,
-      required: [true, "Please specify the subject taught by the teacher"],
-    },
+    courseCreated: [
+      {
+        courseId: String,
+      }
+    ],
     role: {
       type: String,
       // default: "teacher",
@@ -67,11 +67,6 @@ const teacherSchema: Schema<ITeacher> = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    courses: [
-      {
-        courseId: String,
-      },
-    ],
   },
   { timestamps: true }
 );
