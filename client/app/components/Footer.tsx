@@ -1,172 +1,126 @@
-import React from 'react';
-import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon, MDBBtn } from 'mdb-react-ui-kit'; // Make sure MDBIcon is imported
-import { FaGithub, FaGoogle, FaLinkedinIn, FaSquareFacebook, FaTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa6";
-import styled from 'styled-components';
+import Link from 'next/link'
+import React from 'react'
 
+type Props = {}
 
-export default function App() {
-  return (  
-    <StyledFooter bgColor='light' className='text-center text-lg-start text-muted'>
-      <SocialIconsWrapper>
-        <div className='me-5 d-none d-lg-block'>
-          <span>Get connected with us on social networks:</span>
-        </div>
-        <SocialIconGroup>
-          <SocialIconLink href='https://www.facebook.com/'>
-            <FaSquareFacebook />
-          </SocialIconLink>
-          <SocialIconLink href='https://twitter.com/'>
-            <FaTwitter />
-          </SocialIconLink>
-          <SocialIconLink href='https://www.google.com/'>
-            <FaGoogle />
-          </SocialIconLink>
-          <SocialIconLink href='https://www.instagram.com/'>
-            <FaInstagram />
-          </SocialIconLink>
-          <SocialIconLink href='https://www.linkedin.com/'>
-            <FaLinkedinIn />
-          </SocialIconLink>
-          <SocialIconLink href='https://github.com/'>
-            <FaGithub />
-          </SocialIconLink>
-          </SocialIconGroup>
-      </SocialIconsWrapper>
-      
-      <FooterContent>
-        <MDBContainer className='text-center text-md-start mt-5'>
-          <MDBRow className='mt-3'>
-          <MDBCol md="3" lg="2" xl="3" className='mb-4'>
-              <FooterLogoWrapper>
-                <FooterLogo src="https://res.cloudinary.com/digbjrzel/image/upload/v1712661087/BINARAMA_LOGO_1_jflthj.png" alt="Logo" />
-              </FooterLogoWrapper>
-              <FooterDetails>
-                <FooterDetail>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</FooterDetail>
-              </FooterDetails>
-            </MDBCol>
-
-            <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>About</h6>
-              <p>
-                <a href='/about' className='text-reset'>
+const Footer = (props: Props) => {
+  return (
+    <footer>
+      <div className="border border-[#0000000e] dark:border-[#ffffff1e]" />
+      <br />
+      <div className="w-[95%] 800px:w-full 800px:max-w-[85%] mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+          <div className="space-y-3">
+            <h3 className="text-[20px] font-[600] text-black dark:text-white">About</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link
+                  href="/about"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
                   Our Story
-                </a>
-              </p>
-              <p>
-                <a href='/privacy-policy' className='text-reset'>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
                   Privacy Policy
-                </a>
-              </p>
-              <p>
-                <a href='/faq' className='text-reset'>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
                   FAQ
-                </a>
-              </p>
-            </MDBCol>
-
-            <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
-              <p>
-                <a href='/courses' className='text-reset'>
-                  Course
-                </a>
-              </p>
-              <p>
-                <a href='/profile' className='text-reset'>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-[20px] font-[600] text-black dark:text-white">Quick Links</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link
+                  href="/courses"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
+                  Courses
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/profile"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
                   My Account
-                </a>
-              </p>
-              <p>
-                <a href='/course-dashboard' className='text-reset'>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/course-dashboard"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
                   Course Dashboard
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Help
-                </a>
-              </p>
-            </MDBCol>
-
-            <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
-              <p>
-                <MDBIcon icon="home" className="me-2" />
-                New York, NY 10012, US
-              </p>
-              <p>
-                <MDBIcon icon="envelope" className="me-3" />
-                ihello@elearning.com
-              </p>
-              <p>
-                <MDBIcon icon="phone" className="me-3" /> + 01 234 567 88
-              </p>
-              <p>
-                <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
-              </p>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </FooterContent>
-
-      <FooterCopyright>
-        © 2024 Copyright:
-        <a className='text-reset fw-bold' href=''>
-          Elearning
-        </a>
-      </FooterCopyright>
-    </StyledFooter>
-  );
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-[20px] font-[600] text-black dark:text-white">Social Links</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link
+                  href="https://www.youtube.com/channel/"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
+                  Youtube
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://www.instagram.com/"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
+                  Instagram
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://www.github.com/"
+                  className="text-base text-black dark:text-gray-300 dark:hover:text-white"
+                >
+                  github
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-[20px] font-[600] text-black dark:text-white pb-3">Contact Info</h3>
+            <p className="text-base text-black dark:text-gray-300 dark:hover:text-white pb-2">
+            Call Us: 1-885-665-2022
+            </p>
+           
+            <p className="text-base text-black dark:text-gray-300 dark:hover:text-white pb-2">
+            Address: +7011 Vermont Ave, Los Angeles, CA 90044
+            </p>
+         
+            <p className="text-base text-black dark:text-gray-300 dark:hover:text-white  pb-2">
+            Mail Us: hello@elearning.com
+            </p>
+            
+          </div>
+        </div>
+        <br />
+        <p className="text-center text-black dark:text-white">
+          Copyright © 2023 Elearning | All Rights Reserved
+        </p>
+      </div>
+      <br />
+    </footer>
+  )
 }
-const StyledFooter = styled(MDBFooter)`
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #6c757d;
-`;
 
-const SocialIconsWrapper = styled.section`
-display: flex;
-justify-content: space-between; /* Align content to left and right */
-align-items: center; /* Vertically center align content */
-padding: 1.5rem 2rem; /* Add padding */
-border-bottom: 1px solid #dee2e6;
-`;
-const SocialIconGroup = styled.div`
-  display: flex; /* Display icons horizontally */
-  gap: 1rem; /* Add space between icons */
-`;
-
-const SocialIconLink = styled.a`
-  color: inherit;
-`;
-
-const FooterContent = styled.section`
-  padding: 4rem 0;
-`;
-const SectionTitle = styled.h6`
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-`;
-const FooterLogoWrapper = styled.div`
-  margin-right: auto; /* Push to left */
-`;
-const FooterLogo = styled.img`
-  max-width: 300px;
-  margin-top: -100px;
-  margin-left: -70px;
-   /* Adjust the size as needed */
-`;
-const FooterDetails = styled.div`
-  margin-left: -60px; /* Add some space */
-`;
-
-const FooterDetail = styled.p`
-  margin-bottom: 1rem;
-`;
-
-const FooterCopyright = styled.div`
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 1rem 0;
-  justify-content: center;
-`;
+export default Footer
