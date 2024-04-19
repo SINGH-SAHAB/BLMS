@@ -31,12 +31,6 @@ type Props = {
   setActiveVideo: (activeVideo: number) => void;
   user: any;
   refetch: any;
-
-  
-  userDoubt: any;
-  setUserDoubt: (userDoubt: any) => void;
-  active: number;
-  setActive: (active: number) => void;
 };
 
 const CourseContentMedia = ({
@@ -46,12 +40,6 @@ const CourseContentMedia = ({
   setActiveVideo,
   user,
   refetch,
-
-
-  setUserDoubt,
-  userDoubt,
-  setActive,
-  active,
 }: Props) => {
   const [activeBar, setactiveBar] = useState(0);
   const [question, setQuestion] = useState("");
@@ -219,42 +207,6 @@ const CourseContentMedia = ({
 
 
 
-
-// drag and drop
-
-const [dragging, setDragging] = useState(false);
-const [thumbnail, setThumbnail] = useState("");
-   const handleDragOver = (e: any) => {
-    e.preventDefault();
-    setDragging(true);
-  };
-
-  const handleDragLeave = (e: any) => {
-    e.preventDefault();
-    setDragging(false);
-  };
-
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    setDragging(false);
-
-    const file = e.dataTransfer.files?.[0];
-
-    if (file) {
-      if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        setThumbnail(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }else{
-      toast.error("File type not supported//only image files are allowed");
-    }
-  }};
-
-  
-
   return (
     <div className="w-[95%] 800px:w-[86%] py-4 m-auto">
       <CoursePlayer
@@ -294,7 +246,7 @@ const [thumbnail, setThumbnail] = useState("");
         </div>
       </div>
       <h1 className="pt-2 text-[25px] font-[600] dark:text-white text-black ">
-        {/* {data[activeVideo].title} */}
+        {data[activeVideo].title}
       </h1>
       <br />
       <div className="w-full p-4 flex items-center justify-between bg-slate-500 bg-opacity-20 backdrop-blur shadow-[bg-slate-700] rounded shadow-inner">
@@ -364,29 +316,6 @@ const [thumbnail, setThumbnail] = useState("");
               placeholder="Write your question..."
               className="outline-none bg-transparent ml-3 border dark:text-white text-black border-[#0000001d] dark:border-[#ffffff57] 800px:w-full p-2 rounded w-[90%] 800px:text-[18px] font-Poppins"
             ></textarea>
-            <label
-            htmlFor="file"
-            className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
-              dragging ? "bg-blue-500" : "bg-transparent"
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            {thumbnail ? (
-              <Image
-                src={thumbnail}
-                alt="Dropped Image"
-                className="max-h-full w-full object-cover"
-                width={50}
-                height={50}
-              />
-            ) : (
-               <span className="text-black dark:text-white">
-                 Drag and drop your thumbnail here or click to browse
-              </span>
-             )} 
-          </label>
           </div>
           <div className="w-full flex justify-end">
             <div
@@ -662,7 +591,7 @@ const CommentReply = ({
   return (
     <>
       <div className="w-full my-3">
-        {/* {data[activeVideo].questions.map((item: any, index: any) => (
+        {data[activeVideo].questions.map((item: any, index: any) => (
           <CommentItem
             key={index}
             data={data}
@@ -676,7 +605,7 @@ const CommentReply = ({
             handleAnswerSubmit={handleAnswerSubmit}
             answerCreationLoading={answerCreationLoading}
           />
-        ))} */}
+        ))}
       </div>
     </>
   );
