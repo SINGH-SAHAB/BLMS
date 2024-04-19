@@ -14,7 +14,7 @@ notificationRoute.put("/update-notifications/:id", isAutheticated, authorizeRole
 notificationRoute.post(
   "/teacher-verification-notification",
    isAutheticated,
-   authorizeRoles("admin"),
+  //  authorizeRoles("admin"),
   TeacherVerificationNotification
 );
 
