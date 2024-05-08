@@ -1,4 +1,4 @@
-import { useGetCourseContentQuery } from "@/redux/features/courses/coursesApi";
+import { useGetCourseContentQuery, useGetCourseDetailsQuery } from "@/redux/features/courses/coursesApi";
 import React, { useState } from "react";
 import Loader from "../Loader/Loader";
 import Heading from "@/app/utils/Heading";
@@ -7,17 +7,20 @@ import Header from "../Header";
 import CourseContentList from "./CourseContentList";
 
 type Props = {
-  id: string;
+  id: string; //course id
   user:any;
 };
 
-const CourseContent = ({ id,user }: Props) => {
-  const { data: contentData, isLoading,refetch } = useGetCourseContentQuery(id,{refetchOnMountOrArgChange:true});
+const CourseContent = ({ id ,user}: Props) => {
+  const { data: contentData, isLoading,refetch } = useGetCourseDetailsQuery(id,{refetchOnMountOrArgChange:true});
   const [open, setOpen] = useState(false);
   const [route, setRoute] = useState('Login')
-  const data = contentData?.content;
+  //console.log('*****xxxxxx*****',id)
+  const data = contentData?.course?.sections;
 
   const [activeVideo, setActiveVideo] = useState(0);
+
+console.log('*****akashs*****',contentData?.course?.sections?.pdf?.file_url)
 
   return (
     <>

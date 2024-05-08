@@ -23,6 +23,7 @@ const Page = (props: Props) => {
   const [, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
+    
     if (category === "All") {
       setCourses(data?.courses);
     } else {
@@ -34,15 +35,7 @@ const Page = (props: Props) => {
     }
   }, [data, category, search]);
 
-  const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prevCategories => {
-      if (prevCategories.includes(category)) {
-        return prevCategories.filter((cat: string) => cat !== category);
-      } else {
-        return [...prevCategories, category];
-      }
-    });
-  };
+  
 
   const clearFilters = () => {
     setCategory("All");
@@ -62,9 +55,15 @@ const Page = (props: Props) => {
       <div style={{ display: "flex" }}>
         <div
           style={{
+            position: "sticky",
+            top: "14.6%",
             width: "20%",
             backgroundColor: "#e0e0e0",
             padding: "20px",
+            overflowY: "auto",
+            maxHeight: "calc(115vh - 120px)",
+            zIndex:'1',
+            marginBottom: "60px",
           }}
         >
           <Heading title={"Filter"} description={""} keywords={""} />
@@ -118,7 +117,7 @@ const Page = (props: Props) => {
             Clear Filters
           </button>
         </div>
-        <div style={{ width: "80%", paddingLeft: "20px" }}>
+        <div style={{ width: "100%", paddingLeft: "2%" }}>
           {isLoading ? (
             <Loader />
           ) : (

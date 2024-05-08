@@ -512,33 +512,6 @@ export const getUserInformation = CatchAsyncError(
   }
 );
 
-
-
-// export const getUserID = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     // Extract email, phoneNumber, and name from request body
-//     const { email, phoneNumber, name } = req.body;
-
-//     // Call getUserIdByEmailMobileAndName to fetch user ID
-//     const userIdResponse = await getUserIdByEmailMobileAndName(email, phoneNumber, name, res);
-
-//     // Check if the response is successful
-//     if (!!userIdResponse) {
-//       // If successful, send user ID in the response
-//       res.status(200).json({
-//         success: true,
-//         userId: userIdResponse,
-//       });
-//     } else {
-//       // If not successful, throw an error
-//       throw new ErrorHandler("User not found", 404);
-//     }
-//   } catch (error) {
-//     // Handle any errors
-//     return next(new ErrorHandler(error.message, error.status || 500));
-//   }
-// };
-
 interface ISocialAuthBody {
   email: string;
   name: string;
@@ -691,6 +664,94 @@ export const updateProfilePicture = CatchAsyncError(
     }
   }
 );
+
+
+// update Background picture
+interface IUpdateBackgroundPicture {
+  bgPicture: string;
+}
+
+export const updateBackgroundPicture = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { bgPicture } = req.body as IUpdateBackgroundPicture;
+
+      const userId = req.user?._id;
+
+      const user = await userModel.findById(userId).select("+password");
+
+      if (bgPicture && user) {
+        // if user have one avatar then call this if
+        if (user?.bgPicture?.public_id) {
+          // first delete the old image
+          await cloudinary.v2.uploader.destroy(user?.bgPicture?.public_id);
+
+          const myCloud = await cloudinary.v2.uploader.upload(bgPicture, {
+            folder: "bgPicture",
+          });
+          user.bgPicture = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        } else {
+          const myCloud = await cloudinary.v2.uploader.upload(bgPicture, {
+            folder: "bgPicture",
+          });
+          user.bgPicture = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        }
+      }
+
+      await user?.save();
+
+      await redis.set(userId, JSON.stringify(user));
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// About section 
+interface IUpdateAbout {
+  about?: string;
+  userId: string;
+}
+export const updateAbout = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+     try {
+       const { userId ,about } = req.body as IUpdateAbout;
+
+       
+
+      //  const userId = req.user?._id;
+       const user = await userModel.findById(userId);
+ 
+       if (about && user) {
+         user.about = about;
+       }
+ 
+       await user?.save();
+ 
+       await redis.set(userId, JSON.stringify(user));
+ 
+       res.status(200).json({
+         success: true,
+         user,
+       });
+     } catch (error: any) {
+       return next(new ErrorHandler(error.message, 400));
+     }
+  }
+ );
+ 
+
 
 // get all users --- only for admin
 export const getAllUsers = CatchAsyncError(

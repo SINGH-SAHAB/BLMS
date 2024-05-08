@@ -11,16 +11,13 @@ import Image from "next/image";
 import { format } from "timeago.js";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import {
-  AiFillStar,
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineStar,
-} from "react-icons/ai";
+import {AiFillStar,AiOutlineArrowLeft,AiOutlineArrowRight,AiOutlineStar,} from "react-icons/ai";
 import { BiMessage } from "react-icons/bi";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import Ratings from "@/app/utils/Ratings";
 import socketIO from "socket.io-client";
+import QuizPage from "./Quiz_page";
+import PDFPage from "./PdfPage";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -50,6 +47,7 @@ const CourseContentMedia = ({
   const [reply, setReply] = useState("");
   const [reviewId, setReviewId] = useState("");
   const [isReviewReply, setIsReviewReply] = useState(false);
+  
 
   const [
     addNewQuestion,
@@ -205,14 +203,22 @@ const CourseContentMedia = ({
     }
   };
 
-  
+  //console.log('*****details*****',data)
 
   return (
     <div className="w-[95%] 800px:w-[86%] py-4 m-auto">
+      {data[activeVideo]?.type === 'lesson' && (
       <CoursePlayer
-        title={data[activeVideo]?.title}
-        videoUrl={data[activeVideo]?.videoUrl}
-      />
+      videoUrl={data[activeVideo]?.lesson?.videoUrl}
+      title={data[activeVideo]?.lesson?.title}
+       />
+       )}
+      {data?.type === 'quiz' && (
+      <QuizPage />
+      )}
+      {data.type === 'pdf' && (
+         <PDFPage />
+      )}
       <div className="w-full flex items-center justify-between my-3">
         <div
           className={`${
@@ -246,7 +252,7 @@ const CourseContentMedia = ({
         </div>
       </div>
       <h1 className="pt-2 text-[25px] font-[600] dark:text-white text-black ">
-        {data[activeVideo].title}
+        {data[activeVideo]?.lesson?.title}
       </h1>
       <br />
       <div className="w-full p-4 flex items-center justify-between bg-slate-500 bg-opacity-20 backdrop-blur shadow-[bg-slate-700] rounded shadow-inner">
@@ -270,7 +276,7 @@ const CourseContentMedia = ({
       <br />
       {activeBar === 0 && (
         <p className="text-[18px] whitespace-pre-line mb-3 dark:text-white text-black">
-          {data[activeVideo]?.description}
+          {data[activeVideo]?.lesson?.description}
         </p>
       )}
 
@@ -279,7 +285,7 @@ const CourseContentMedia = ({
           {data[activeVideo]?.links.map((item: any, index: number) => (
             <div className="mb-5" key={index}>
               <h2 className="800px:text-[20px] 800px:inline-block dark:text-white text-black">
-                {item.title && item.title + " :"}
+                {item.lesson.title && item.lesson.title + " :"}
               </h2>
               <a
                 className="inline-block text-[#4395c4] 800px:text-[20px] 800px:pl-2"

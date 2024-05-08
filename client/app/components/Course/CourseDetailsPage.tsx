@@ -1,4 +1,4 @@
-import { useGetCourseDetailsQuery } from "@/redux/features/courses/coursesApi";
+ import { useGetCourseDetailsQuery } from "@/redux/features/courses/coursesApi";
 import React, { useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
 import Heading from "@/app/utils/Heading";
@@ -43,7 +43,7 @@ const CourseDetailsPage = ({ id }: Props) => {
       setClientSecret(paymentIntentData?.client_secret);
     }
   }, [paymentIntentData]);
-
+  //console.log('99999999999',data.course)
   return (
     <>
       {isLoading ? (
@@ -51,7 +51,7 @@ const CourseDetailsPage = ({ id }: Props) => {
       ) : (
         <div>
           <Heading
-            title={data.course.name + " - ELearning"}
+            title={data?.course?.name + " - ELearning"}
             description={
               "ELearning is a programming community which is developed by shahriar sajeeb for helping programmers"
             }
@@ -66,7 +66,7 @@ const CourseDetailsPage = ({ id }: Props) => {
           />
           {stripePromise && (
             <CourseDetails
-              data={data.course}
+              data={data?.course}
               stripePromise={stripePromise}
               clientSecret={clientSecret}
               setRoute={setRoute}

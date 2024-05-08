@@ -13,7 +13,12 @@ export interface IUser extends Document {
   avatar: {
     public_id: string;
     url: string;
-  };
+  }
+  bgPicture?:{
+    public_id:string;
+    url:string;
+  }
+  about:string;
   role: string;
   isVerified: boolean;
   courses: Array<{ courseId: string }>;
@@ -55,6 +60,13 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     avatar: {
       public_id: String,
       url: String,
+    },
+    bgPicture: {
+      public_id: String,
+      url: String,
+    },
+    about:{
+      type:String,
     },
     role: {
       type: String,

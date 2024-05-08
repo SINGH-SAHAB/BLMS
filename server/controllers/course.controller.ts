@@ -12,6 +12,7 @@ import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.Model";
 import axios from "axios";
 import TestModel from "../models/test.Model";
+import {google} from "googleapis";
 
 // create the test questions
 export const addTestQuestion = async (req: Request, res: Response, next: NextFunction) => {
@@ -602,30 +603,46 @@ export const deleteCourse = CatchAsyncError(
     }
   }
 );
+const youtube = google.youtube({
+  version: 'v3',
+  auth: process.env.YOUTUBE_API_KEY, // Ensure you have set up an API key for YouTube Data API
+});
 
-// generate video url
-export const generateVideoUrl = CatchAsyncError(
+// Generate video URL function
+export const generateYouTubeVideoUrl = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { videoId } = req.body;
-      const response = await axios.post(
-        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
-        { ttl: 300 },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
-          },
-        }
-      );
-      res.json(response.data);
+
+      // Validate videoId
+      if (!videoId) {
+        return next(new ErrorHandler('Video ID is required', 400));
+      }
+
+      // Call the YouTube Data API to get video details
+      const response = await youtube.videos.list({
+        part: ['player'],
+        id: videoId,
+      });
+
+      // Check if the response is successful and contains items
+      if (!response.data ||!response.data.items || response.data.items.length === 0) {
+        return next(new ErrorHandler('No video found', 404));
+      }
+
+      // Safely extract the video URL
+      const videoUrl = response.data.items[0].player?.embedHtml;
+
+      if (!videoUrl) {
+        return next(new ErrorHandler('Failed to retrieve video URL', 500));
+      }
+
+      res.json({ videoUrl });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
   }
 );
-
 //___________________________________________________________________________________________________________________________________________________________________________
 //___________________________________________________________________________________________________________________________________________________________________________
 

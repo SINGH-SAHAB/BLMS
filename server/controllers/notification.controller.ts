@@ -76,7 +76,7 @@ export const TeacherVerificationNotification = CatchAsyncError(
         user: user,
       });
       // Create a new notification for teacher verification request
-      const newNotification: INotification = await NotificationModel.create({
+      const newNotification: IAdminNotif = await AdminNotificationModel.create({
         title: `Teacher Verification Request by ${user.name}`,
         message:"click here to verify",
         userId:userID // Add the user ID to the notification

@@ -9,13 +9,15 @@ import {
 } from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
+import { IoIosCamera } from "react-icons/io";
+
 
 type Props = {
   avatar: string | null;
   user: any;
 };
 
-const ProfileInfo: FC<Props> = ({ avatar, user }) => {
+const ProfileInfo: FC<Props> = ({ avatar, user}) => {
   const [name, setName] = useState(user && user.name);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
 
@@ -50,17 +52,17 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     }
   }, [isSuccess, error,success, updateError]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     if (name !== "") {
       await editProfile({
         name: name,
       });
     }
-  };
+  // };
 
-  const handleSubmitPhone = async (phone: any) => {
-    phone.preventDefault();
+  // const handleSubmitPhone = async (phone: any) => {
+   
     if (phoneNumber !== "") {
       await editProfile({
         phoneNumber: phoneNumber,
@@ -89,7 +91,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
           />
           <label htmlFor="avatar">
             <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
-              <AiOutlineCamera size={20} className="z-1" />
+              <IoIosCamera size={20} />
             </div>
           </label>
         </div>
@@ -118,7 +120,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
                 // readOnly
                 required
                 value={phoneNumber}
-                onChange={(phone) => setPhoneNumber(phone.target.value)}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
 
