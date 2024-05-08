@@ -141,7 +141,7 @@ const SideBarProfile: FC<Props> = ({
       </div>
       <div className="mt-16 h-full">
         <div className="text-center mt-16 h-full">
-          {user.role === "user" && (
+          {user.role === "student" && (
             <p
               className="text-gray-500 text-sm mt-16 cursor-pointer hover: text-gray-800 hover:font-semibold"
               onClick={toggleTeacherVerification}

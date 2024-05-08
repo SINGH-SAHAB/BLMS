@@ -15,17 +15,11 @@ const EditCategories = (props: Props) => {
   const { data, isLoading,refetch } = useGetHeroDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });
-  // const types = data?.layout ? Object.keys(data.layout) : [];
-
   const [editLayout, { isSuccess: layoutSuccess, error }] =
     useEditLayoutMutation();
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
-    // if (data) {
-    //   setCategories(data.layout.categories);
-    // }
-
     if (data && data.layout ) {
       setCategories(data.layout.categories || []);
     } 
@@ -47,10 +41,8 @@ const EditCategories = (props: Props) => {
   }, [data, layoutSuccess, error,refetch]);
 
   const handleCategoriesAdd = (id: any, value: string) => {
-    setCategories((prevCategories: any) =>
-      prevCategories.map((category: any) =>
-        category._id === id ? { ...category, title: value } : category
-      )
+    setCategories((prevCategory: any) =>
+      prevCategory.map((i: any) => (i._id === id ? { ...i, title: value } : i))
     );
   };
 
@@ -152,6 +144,9 @@ const EditCategories = (props: Props) => {
 };
 
 export default EditCategories;
+
+
+
 
 // import { useGetHeroDataQuery, useEditLayoutMutation } from "@/redux/features/layout/layoutApi";
 // import React, { useEffect, useState } from "react";
