@@ -49,8 +49,8 @@ interface Inotes extends Document {
   notes: INote[];
 }
 
-interface ICourseData extends Document {
-  tests: any;
+interface Isections extends Document {
+ // tests: any;
   title: string;
   description: string;
   videoUrl: string;
@@ -61,9 +61,6 @@ interface ICourseData extends Document {
   links: ILink[];
   suggestion: string;
   questions: IComment[];
-  testsQuestions: ITestQuestion[];
-  notes: Inotes[];
-  getTestsAnswer: ITestSubmit[];
 }
 
 export interface ICourse extends Document {
@@ -81,7 +78,7 @@ export interface ICourse extends Document {
   targetAudience:{title: string}[];
   MaterialIncluded:{title: string}[];
   reviews: IReview[];
-  courseData: ICourseData[];
+  sections: Isections[];
   ratings?: number;
   purchased: number;
 }
@@ -147,7 +144,7 @@ const commentSchema = new Schema<IComment>(
   { timestamps: true }
 );
 
-const courseDataSchema = new Schema<ICourseData>({
+const sectionsSchema = new Schema<Isections>({
   videoUrl: String,
   videoThumbnail: Object,
   title: String,
@@ -158,8 +155,7 @@ const courseDataSchema = new Schema<ICourseData>({
   links: [linkSchema],
   suggestion: String,
   questions: [commentSchema],
-  testsQuestions: [testQuestionSchema],
-  notes:[notesSchema],
+  
 });
 
 const courseSchema = new Schema<ICourse>(
@@ -209,7 +205,7 @@ const courseSchema = new Schema<ICourse>(
     targetAudience:[{title: {type: String}}],
     MaterialIncluded:[{title: {type: String} }],
     reviews: [reviewSchema],
-    courseData: [courseDataSchema],
+    sections: [sectionsSchema],
     ratings: {
       type: Number,
       default: 0,

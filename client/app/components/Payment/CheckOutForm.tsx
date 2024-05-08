@@ -21,7 +21,7 @@ type Props = {
   refetch:any;
 };
 
-const CheckOutForm = ({ data,user,refetch }: Props) => {
+const  CheckOutForm = ({ data,user,refetch }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>("");

@@ -9,7 +9,7 @@ import {
   // deleteTestQuestion,
   editCourse,
   // editTestQuestion,
-  generateVideoUrl,
+  generateYouTubeVideoUrl,
   getAdminAllCourses,
   getAllCourses,
   getCourseByUser,
@@ -67,7 +67,7 @@ courseRouter.put(
   addReplyToReview
 );
 
-courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
+courseRouter.post("/getYouTubeOTP", generateYouTubeVideoUrl);
 
 courseRouter.delete(
   "/delete-course/:id",

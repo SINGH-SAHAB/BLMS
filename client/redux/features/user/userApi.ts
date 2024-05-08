@@ -10,6 +10,24 @@ export const userApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    updateBgpicture: builder.mutation({
+      query: (bgPicture) => ({
+        url: "update-user-bgPicture",
+        method: "PUT",
+        body: { bgPicture },
+        credentials: "include" as const,
+      }),
+    }),
+    updateAbout: builder.mutation({
+      query: ({userId, about}) => ({
+        url: "update-user-About",
+        method: "PUT",
+        body: {
+          userId,
+           about },
+        credentials: "include" as const,
+      }),
+    }),
     editProfile: builder.mutation({
       query: ({ name }) => ({
         url: "update-user-info",
@@ -77,6 +95,7 @@ export const userApi = apiSlice.injectEndpoints({
 
 export const {
   useUpdateAvatarMutation,
+  useUpdateBgpictureMutation,
   useEditProfileMutation,
   useUpdatePasswordMutation,
   useGetAllUsersQuery,
@@ -84,4 +103,5 @@ export const {
   useDeleteUserMutation,
   useGetUserInformationQuery,
   useUpdateUserRoleByIdMutation,
+  useUpdateAboutMutation,
 } = userApi;

@@ -1,11 +1,12 @@
 import React, { FC, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { FaQuestion, FaRegFilePdf } from "react-icons/fa";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 
 type Props = {
   data: any;
   activeVideo?: number;
-  setActiveVideo?: any;
+  setActiveVideo?: any; 
   isDemo?: boolean;
 };
 
@@ -13,14 +14,18 @@ const CourseContentList: FC<Props> = (props) => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(
     new Set<string>()
   );
+  //console.log('*****DATA*****',props.data);
 
-  // Find unique video sections
+
   const videoSections: string[] = [
-    ...new Set<string>(props.data?.map((item: any) => item.videoSection)),
+    ...new Set<string>(props.data?.map((item: any) => {
+      // console.log('*****type*****',item.type);
+      return item.vedioSection
+     })),
   ];
 
   let totalCount: number = 0; // Total count of videos from previous sections
-
+ 
   const toggleSection = (section: string) => {
     const newVisibleSections = new Set(visibleSections);
     if (newVisibleSections.has(section)) {
@@ -30,9 +35,11 @@ const CourseContentList: FC<Props> = (props) => {
     }
     setVisibleSections(newVisibleSections);
   };
+   
 
   return (
-    <div className={`mt-[15px] w-full ${!props.isDemo && 'ml-[-30px] min-h-screen sticky top-24 left-0 z-30'}`}>
+    <div className={`mt-[15px] w-full ${!props.isDemo && 'ml-[-30px] screen sticky top-24 left-0 z-30'}`}>
+      
       {videoSections.map((section: string, sectionIndex: number) => {
 
         const isSectionVisible = visibleSections.has(section);
@@ -44,7 +51,12 @@ const CourseContentList: FC<Props> = (props) => {
 
         const sectionVideoCount: number = sectionVideos.length; // Number of videos in the current section
         const sectionVideoLength: number = sectionVideos.reduce(
-          (totalLength: number, item: any) => totalLength + item.videoLength,
+          (totalLength: number, item: any) => {
+             // Log the videoLength property
+            if(item?.lesson?.videoLength){
+            totalLength= totalLength + item?.lesson?.videoLength;} // Accumulate the total length
+            return totalLength;
+          },
           0
         );
         const sectionStartIndex: number = totalCount; // Start index of videos within the current section
@@ -83,31 +95,44 @@ const CourseContentList: FC<Props> = (props) => {
               <div className="w-full">
                 {sectionVideos.map((item: any, index: number) => {
                   const videoIndex: number = sectionStartIndex + index; // Calculate the video index within the overall list
-                  const contentLength: number = item.videoLength / 60;
+                  const contentLength: number = item?.lesson?.videoLength / 60;
                   return (
                     <div
                       className={`w-full ${
                         videoIndex === props.activeVideo ? "bg-slate-800" : ""
                       } cursor-pointer transition-all p-2`}
-                      key={item._id}
+                      key={item?.lesson?._id}
                       onClick={() => props.isDemo ? null : props?.setActiveVideo(videoIndex)}
                     >
                       <div className="flex items-start">
-                        <div>
-                          <MdOutlineOndemandVideo
-                            size={25}
-                            className="mr-2"
-                            color="#1cdada"
-                          />
-                        </div>
+                      <div>
+                        {item.type === 'lesson' && (
+                        <MdOutlineOndemandVideo size={20} className="mr-2" color="black" />
+                        )}
+                         {item.type === 'pdf' && (
+                         <FaRegFilePdf  size={20} className="mr-2" color="black" />
+                         )}
+                         {item.type === 'quiz' && (
+                         <FaQuestion size={20} className="mr-2" color="black" />
+                        //  <FaQuestion size={20} className="mr-2" color="#1cdada" />
+                         )}
+                      </div>
                         <h1 className="text-[18px] inline-block break-words text-black dark:text-white">
-                          {item.title}
+                           {item.type === 'lesson' ? item.lesson?.title :
+                           item.type === 'pdf' ? item.pdf?.title:
+                           item.type === 'quiz' ? item.type :
+                           null /* or any default value you want to render if none of the conditions match */}
                         </h1>
+                        
                       </div>
                       <h5 className="pl-8 text-black dark:text-white">
-                        {item.videoLength > 60 ? contentLength.toFixed(2) : item.videoLength}{" "}
-                        {item.videoLength > 60 ? "hours" : "minutes"}
+                        {item.type === 'lesson' &&
+                        (item.lesson.videoLength > 60 ?
+                           `${contentLength.toFixed(2)} hours` :
+                           `${item.lesson.videoLength} minutes`
+                         )}
                       </h5>
+
                     </div>
                   );
                 })}

@@ -30,10 +30,14 @@ const TeacherVerification: FC<Props> = ({ onClose }) => {
     validationSchema: schema,
     onSubmit: async (values) => {
       try {
+         console.log()
          console.log(values.name.toLowerCase() === user.name.toLowerCase());
          console.log(values.email.toLowerCase() === user.email.toLowerCase());
-         console.log(values.phoneNumber === user.phoneNumber);
+         
          const phoneNumber = parseFloat(values.phoneNumber);
+         console.log(phoneNumber === user.phoneNumber);
+        //  console.log(typeof phoneNumber);
+        //  console.log(typeof user.phoneNumber);
      
          // Compare form data with user data
          if (

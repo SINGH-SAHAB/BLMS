@@ -1,4 +1,3 @@
-
 import React, { FC,useState, useEffect } from 'react';
 import Link from 'next/link';
 import Carousel from 'react-bootstrap/Carousel';
@@ -50,12 +49,12 @@ const Home:React.FC = () => {
         {/* Additional Content */}
         <div style={additionalContentStyle}>
           <div style={{ ...textContainerStyle, marginLeft: '50px' }}>
-            <h5 style={headingStyle}>Crack EXAMS with Company Name</h5>
+            <h5 style={headingStyle}>Ace your tests with Binarama</h5>
             <h5 style={{ marginTop: '10px' }}>Over 10 crore learners trust us for Service.</h5>
           </div>
           <div style={buttonContainerStyle}>
-            <button style={leftButtonStyle}>Try learning for free</button>
-            <button style={rightButtonStyle}>View subscription plan</button>
+            <button style={leftButtonStyle}>Unlock Your Free Trial</button>
+            <button style={rightButtonStyle}>Choose Your Subscription</button>
           </div>
         </div>
         
@@ -64,12 +63,9 @@ const Home:React.FC = () => {
           <div style={{ ...buttonRowStyle1, ...(window.innerWidth <= 500 && smallScreenStyle) }}>
           <Link href="../Liveclass" style={{color: 'black', textDecoration: 'none'}}>
             <button style={buttonStyle}>
-  
-              <div >
-                
+              <div > 
                 <FaVideo style={{ width: '50px',marginTop:'40px',marginLeft:'10px', height: '50px', position: 'absolute', top: '5px', left: '5px' }} />
                 <div style={{ marginLeft: '70px' }}>
-                 
                   <h5>Live classes<br /> 
                   Details</h5>
                   {showImportedFile}
@@ -156,24 +152,26 @@ const Home:React.FC = () => {
         <div style={boxStyle}>
           <div style={textSectionStyle}>
             <h3 style={headingStyle}>Visit the centre for a personalized experience</h3>
-            <p>This is where your text content goes.</p>
+            <br/>
+            <p >Visit our centre and embark on a personalized learning journey tailored just for you. At our centre, we prioritize understanding your unique educational needs and goals. Our experienced instructors are dedicated to providing individualized attention, ensuring that you receive the guidance and support you need to succeed. Whether you're looking to strengthen specific skills, prepare for exams, or explore new subjects, our centre offers a welcoming environment where personalized learning thrives. Come and experience the difference of personalized education at our centre – where your success is our priority.</p>
             <button style={visitButtonStyle}>Visit the Center</button>
           </div>
           <div style={photoBoxStyle}>
             <img
-            src="https://via.placeholder.com/400x400" alt="Random Photo" style={photoSectionStyle}
+            src="https://res.cloudinary.com/digbjrzel/image/upload/v1712991622/samples/KG2-Class-Picnic-01_ax4gpd.jpg" alt="Random Photo" style={photoSectionStyle}
             />
           </div>
         </div>
         <div style={ScolarshipSection}>
           <div style={ScolarshiptextSectionStyle}>
             <h3 style={headingStyle}>Take a test for free and win up to 50% scholarship</h3>
-            <p>This is where your text content goes.</p>
+            <br/>
+            <p>Take a test for free and seize the opportunity to win up to a 50% scholarship with us! At our educational platform, we believe in rewarding hard work and dedication. By taking our complimentary test, you not only get a chance to assess your skills but also pave the way for significant educational savings. Achieve outstanding results and stand a chance to earn a scholarship that can cover up to half of your tuition fees. It's more than just a test; it's your gateway to affordable and quality education.</p>
             <button style={ScolershipButtonStyle}>Attemt test now</button>
           </div>
-          <div style={ScolarshipimageSectionStyle}>
+          {/* <div style={ScolarshipimageSectionStyle}>
               <img src="/path/to/image.png" alt="Image" style={{ width: '100%', height: '100%' }} />
-          </div>
+          </div> */}
         </div>
         <div style={ExtraSectionStyle}>
           <div style={ExtraTextSectionStyle}>
@@ -201,6 +199,7 @@ const pageStyle: React.CSSProperties = {
   width: '100vw',
   height:'100vh',
   overflowX:'hidden',
+  
 };
 const mainContentStyle: React.CSSProperties = {
   maxWidth: '100%', // Limit the maximum width of the main content
@@ -239,7 +238,7 @@ const headingStyle: React.CSSProperties = {
   margin: '0',
   color: '#3C4852',
   display: 'block',
-  fontSize: 'clamp(32px, 3em, 48px)',
+  fontSize: 'clamp(30px, 3em, 45px)',
   lineHeight: 'clamp(40px, 1.2em, 56px)',
 };
 
@@ -312,7 +311,9 @@ const buttonStyle: React.CSSProperties = {
 const textSectionStyle: React.CSSProperties = {
   flex: '1',
   padding: '20px',
+
 };
+
 
 const photoSectionStyle: React.CSSProperties = {
   width: '100%',
@@ -321,19 +322,19 @@ const photoSectionStyle: React.CSSProperties = {
 };
 
 const boxStyle: React.CSSProperties = {
-  borderRadius: '20px',
-  height: '20%',
+  borderRadius: '15px',
+  height: '15%',
   display: 'flex',
   justifyContent: 'space-around',
   margin: '5% auto',
-  width: '100%',
+  width: '90%',
   padding: '1px 1px',
   backgroundColor: '#ffeed7',
 };
 
 const photoBoxStyle: React.CSSProperties = {
   borderRadius: '30px',
-  marginTop: '2%',
+  marginTop: '8%',
   marginBottom:'2%',
   marginRight: '3%',
   width: '40%', // Adjust width as needed
@@ -343,8 +344,8 @@ const photoBoxStyle: React.CSSProperties = {
 };
 const visitButtonStyle: React.CSSProperties = {
   padding: '14px 32px',
-  marginTop: '300px',
-  marginBottom:'50px',
+  marginTop: '5px',
+  marginBottom:'10px',
   boxSizing: 'border-box',
   borderRadius: '8px',
   background: 'rgb(59 71 81)',
@@ -381,7 +382,7 @@ const ScolarshiptextSectionStyle: React.CSSProperties = {
 };
 const ScolershipButtonStyle: React.CSSProperties = {
   padding: '14px 32px',
-  marginTop: '160px',
+  marginTop: '50px',
   boxSizing: 'border-box',
   borderRadius: '8px',
   background: 'rgb(59 71 81)',
@@ -415,146 +416,4 @@ const ExtraTextSectionStyle: React.CSSProperties = {
 const ExtraImgSectionStyle: React.CSSProperties = {
   width: '40%', // Adjust the width as needed
 };
-
 export default Home;
-
-// /* eslint-disable react-hooks/exhaustive-deps */
-// 'use client'
-// import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
-// import Image from "next/image";
-// import Link from "next/link";
-// import React, { FC, useEffect, useState } from "react";
-// import { BiSearch } from "react-icons/bi";
-// import Loader from "../Loader/Loader";
-// import { useRouter } from "next/navigation";
-
-// type Props = {};
-
-// const Hero: FC<Props> = (props) => {
-//   const { data,isLoading } = useGetHeroDataQuery("Banner", {});
-//   const [search,setSearch] = useState("");
-//   const router = useRouter()
-  
- 
-  
-//   // const handleSearch = () => {
-//   //  if(search === ""){
-//   //   return
-//   //  }else{
-//   //   router.push(`/courses?title=${search}`);
-//   //  }
-//   // }
-
-//   useEffect(() => {
-//     const handleEnterKeyPress = (e: { key: string; }) => {
-//       if (e.key === "Enter" && search.trim() !== "") {
-//         handleSearch();
-//       }
-//     };
-
-//     window.addEventListener("keydown", handleEnterKeyPress);
-
-//     return () => {
-//       window.removeEventListener("keydown", handleEnterKeyPress);
-//     };
-//   }, [search]);
-
-//   const handleSearch = () => {
-//     if (search === "") {
-//       return;
-//     } else {
-//       router.push(`/courses?title=${encodeURIComponent(search)}`);
-//     }
-//   };
-
-
-//   return (
-//    <>
-//    {
-//     isLoading ? (
-//       <Loader />
-//     ) : (
-//       <div className="w-full 1000px:flex items-center">
-//       <div className="absolute top-[100px] 1000px:top-[unset] 1500px:h-[700px] 1500px:w-[700px] 1100px:h-[600px] 1100px:w-[600px] h-[40vh] left-5 w-[40vh] hero_animation rounded-[50%] 1100px:left-8 1500px:left-14"></div>
-//       <div className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-[0] z-10">
-//         <Image
-//           src={data?.layout?.banner?.image?.url }
-//          // src={require("../../../public/assests/banner-img-1.png")}
-//           width={400}
-//           height={400}
-//           alt=""
-//           className="object-contain 1100px:max-w-[90%] w-[90%] 1500px:max-w-[85%] h-[auto] z-[10]"
-//         />
-//         {/* <Image
-//             src={require("../../../public/assests/banner-img-1.png")}
-//             alt=""
-//             className="object-contain 1100px:max-w-[90%] w-[90%] 1500px:max-w-[85%] h-[auto] z-[10]"
-
-//             // className="rounded-full"
-//           /> */}
-//       </div>
-//       <div className="1000px:w-[60%] flex flex-col items-center 1000px:mt-[0px] text-center 1000px:text-left mt-[150px]">
-//         <h2 className="dark:text-white text-[#000000c7] text-[30px] px-3 w-full 1000px:text-[70px] font-[600] font-Josefin py-2 1000px:leading-[75px] 1500px:w-[60%] 1100px:w-[78%]">
-//           {data?.layout?.banner?.title}
-//           {/* Improve your online learning experience better instantly */}
-
-//         </h2>
-//         <br />
-//         <p className="dark:text-[#edfff4] text-[#000000ac] font-Josefin font-[600] text-[18px] 1500px:!w-[55%] 1100px:!w-[78%]">
-//          {data?.layout?.banner?.subTitle}
-//         </p>
-//         <br />
-//         <br />
-//         <div className="1500px:w-[55%] 1100px:w-[78%] w-[90%] h-[50px] bg-transparent relative">
-//           <input
-//             type="search"
-//             placeholder="Search Courses..."
-//             value={search}
-//             onChange={(e) => setSearch(e.target.value)}
-//             className="bg-transparent border dark:border-none dark:bg-[#575757] dark:placeholder:text-[#ffffffdd] rounded-[5px] p-2 w-full h-full outline-none text-[#0000004e] dark:text-[#ffffffe6] text-[20px] font-[500] font-Josefin"
-//           />
-//           <div className="absolute flex items-center justify-center w-[50px] cursor-pointer h-[50px] right-0 top-0 bg-[#39c1f3] rounded-r-[5px]"
-//           onClick={handleSearch}
-//           >
-//             <BiSearch className="text-white" size={30} />
-//           </div>
-//         </div>
-//         <br />
-//         <br />
-//         <div className="1500px:w-[55%] 1100px:w-[78%] w-[90%] flex items-center">
-//           <Image
-//             src={require("../../../public/assests/client-1.jpg")}
-//             alt=""
-//             className="rounded-full"
-//           />
-//           <Image
-//             src={require("../../../public/assests/client-2.jpg")}
-//             alt=""
-//             className="rounded-full ml-[-20px]"
-//           />
-//           <Image
-//             src={require("../../../public/assests/client-3.jpg")}
-//             alt=""
-//             className="rounded-full ml-[-20px]"
-//           />
-//           <p className="font-Josefin dark:text-[#edfff4] text-[#000000b3] 1000px:pl-3 text-[18px] font-[600]">
-//             500K+ People already trusted us.{" "}
-//             <Link
-//               href="/courses"
-//               className="dark:text-[#46e256] text-[crimson]"
-//             >
-//               View Courses
-//             </Link>{" "}
-//           </p>
-//         </div>
-//         <br />
-//       </div>
-//     </div>
-//     )
-//    }
-//    </>
-//   );
-// };
-
-// export default Hero;
-

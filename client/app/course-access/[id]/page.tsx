@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 import CourseContent from "@/app/components/Course/CourseContent";
 import Footer from "@/app/components/Footer";
 import Loader from "@/app/components/Loader/Loader";
@@ -6,6 +6,7 @@ import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 
+//console.log('****fffff****',data)
 type Props = {
     params:any;
 }
@@ -13,7 +14,9 @@ type Props = {
 const Page = ({params}: Props) => {
     const id = params.id;
   const { isLoading, error, data,refetch } = useLoadUserQuery(undefined, {});
-
+// console.log('&**&',id)
+// console.log('****hello****',data?.user)
+//console.log('****fgfjkgcfff****',data)
   useEffect(() => {
     if (data) {
       const isPurchased = data.user.courses.find(
@@ -27,6 +30,7 @@ const Page = ({params}: Props) => {
       redirect("/");
     }
   }, [data, error, id]);
+  //console.log('****fffff****',data?.user)
 
   return (
    <>
@@ -35,7 +39,7 @@ const Page = ({params}: Props) => {
         <Loader />
     ) : (
         <div>
-          <CourseContent id={id} user={data.user} />
+          <CourseContent id={id} user={data?.user} />
           <Footer />
 
         </div>
@@ -46,3 +50,4 @@ const Page = ({params}: Props) => {
 }
 
 export default Page
+
